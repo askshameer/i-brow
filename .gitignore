@@ -10,6 +10,10 @@ venv/
 env/
 ENV/
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # IDE
 .vscode/
@@ -18,6 +22,8 @@ ENV/
 *.swo
 *~
 .DS_Store
+*.sublime-project
+*.sublime-workspace
 
 # Project specific
 uploads/*
@@ -64,3 +70,119 @@ secrets.json
 config.ini
 *.pem
 *.key
+
+# ===== React/Node.js (Bug Tracking System) =====
+
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+*.lcov
+
+# Production
+/build
+/bts/build
+
+# Misc
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Local env files
+*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Yarn
+yarn-error.log
+yarn-debug.log
+.yarn/cache
+.yarn/install-state.gz
+.yarn/unplugged
+.yarn/build-state.yml
+.pnp.*
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS generated files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+
+# React specific
+/bts/node_modules
+/bts/.pnp
+/bts/.pnp.js
+/bts/coverage
+/bts/build
+/bts/npm-debug.log*
+/bts/yarn-debug.log*
+/bts/yarn-error.log*
+/bts/.env.local
+/bts/.env.development.local
+/bts/.env.test.local
+/bts/.env.production.local
+
+# Tailwind CSS
+/bts/dist/
+
+# Package lock files (optional - uncomment if you don't want to track)
+# package-lock.json
+# yarn.lock
+# /bts/package-lock.json
+# /bts/yarn.lock
+
+# Debug
+debug.log
+/bts/debug.log
+
+# Mac files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux files
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
