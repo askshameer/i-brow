@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phi-3 Offline Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0f0f0f;
+            color: #e0e0e0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #1a1a1a;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            color: #4a9eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .chat-container {
+            flex: 1;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.5rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .message.user .message-content {
+            background-color: #4a9eff;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .message-content {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .file-attachment {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .file-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #4a9eff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .file-size {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .analyze-button {
+            padding: 0.5rem 1rem;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+        }
+
+        .analyze-button:hover {
+            background-color: #357abd;
+        }
+
+        .analyze-button:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+
+        .file-upload-area {
+            background-color: #1a1a1a;
+            border: 2px dashed #333;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .file-upload-area.show {
+            display: block;
+        }
+
+        .file-upload-area.drag-over {
+            border-color: #4a9eff;
+            background-color: #1e1e1e;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #4a9eff;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .browse-button {
+            padding: 0.5rem 1.5rem;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .browse-button:hover {
+            background-color: #333;
+            border-color: #4a9eff;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            align-items: center;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        #messageInput {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 25px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #messageInput:focus {
+            border-color: #4a9eff;
+        }
+
+        .attach-button {
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .attach-button:hover {
+            background-color: #333;
+            border-color: #4a9eff;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        button:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }
+
+        .controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 0.5rem 1rem;
+            background-color: #2a2a2a;
+            font-size: 0.875rem;
+        }
+
+        .settings-panel {
+            position: fixed;
+            right: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: #1a1a1a;
+            padding: 2rem 1rem;
+            transition: right 0.3s;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .settings-panel.open {
+            right: 0;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .setting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #999;
+        }
+
+        .setting-item input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .setting-value {
+            text-align: center;
+            color: #4a9eff;
+            font-size: 0.875rem;
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.875rem;
+            padding: 0.5rem 0;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background-color: #4a9eff;
+            border-radius: 50%;
+            animation: loadingDot 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loadingDot {
+            0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            background: none;
+            color: #999;
+            font-size: 1.5rem;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .analysis-result {
+            background-color: #1e2936;
+            border: 1px solid #2a4158;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .analysis-header {
+            font-weight: 600;
+            color: #4a9eff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .analysis-content {
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .controls {
+                font-size: 0.75rem;
+            }
+            
+            .control-btn {
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>
+            <span class="status-indicator"></span>
+            Phi-3 Offline Chatbot
+        </h1>
+    </div>
+
+    <div class="container">
+        <div class="file-upload-area" id="fileUploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+            <div class="upload-icon">📎</div>
+            <div class="upload-text">Drag and drop log files here or</div>
+            <button class="browse-button" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+            <input type="file" id="fileInput" style="display: none;" accept=".txt,.log,.dmp,.dump,.err,.out,.crash,.trace" onchange="handleFileSelect(event)">
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message assistant">
+                <div>
+                    <div class="message-content">Hello! I'm your Phi-3 assistant. I can help you analyze error logs and crash dumps. You can drag and drop log files or click the attachment button to upload them.</div>
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <span>Phi-3 is thinking</span>
+            <div class="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn" onclick="clearChat()">Clear Chat</button>
+            <button class="control-btn" onclick="toggleSettings()">Settings</button>
+            <button class="control-btn" onclick="downloadHistory()">Download History</button>
+        </div>
+
+        <div class="input-container">
+            <button class="attach-button" onclick="toggleFileUpload()" title="Attach log file">
+                📎
+            </button>
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="messageInput" 
+                    placeholder="Type your message here..."
+                    onkeypress="handleKeyPress(event)"
+                    autocomplete="off"
+                >
+            </div>
+            <button onclick="sendMessage()" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h2>Settings</h2>
+            <button class="close-btn" onclick="toggleSettings()">×</button>
+        </div>
+        
+        <div class="setting-item">
+            <label for="temperatureSlider">Temperature (Creativity)</label>
+            <input 
+                type="range" 
+                id="temperatureSlider" 
+                min="0.1" 
+                max="1.0" 
+                step="0.1" 
+                value="0.3"
+                oninput="updateTemperature(this.value)"
+            >
+            <div class="setting-value" id="temperatureValue">0.3</div>
+        </div>
+        
+        <div class="setting-item">
+            <label for="maxTokensSlider">Max Response Length</label>
+            <input 
+                type="range" 
+                id="maxTokensSlider" 
+                min="50" 
+                max="600" 
+                step="50" 
+                value="400"
+                oninput="updateMaxTokens(this.value)"
+            >
+            <div class="setting-value" id="maxTokensValue">400 tokens</div>
+        </div>
+        
+        <div class="setting-item">
+            <label>Model Info</label>
+            <div style="color: #666; font-size: 0.875rem;">
+                <p>Model: Phi-3-mini-4k-instruct</p>
+                <p id="deviceInfo">Device: Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isProcessing = false;
+        let uploadedFiles = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            getStatus();
+            document.getElementById('messageInput').focus();
+        });
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message || isProcessing) return;
+            
+            isProcessing = true;
+            input.value = '';
+            input.disabled = true;
+            document.getElementById('sendButton').disabled = true;
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').classList.add('show');
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addMessage(data.response, 'assistant');
+                } else {
+                    addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, I couldn\'t connect to the server. Please check if it\'s running.', 'assistant');
+            } finally {
+                isProcessing = false;
+                input.disabled = false;
+                document.getElementById('sendButton').disabled = false;
+                document.getElementById('loadingIndicator').classList.remove('show');
+                input.focus();
+            }
+        }
+
+        function addMessage(text, sender, fileInfo = null) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            let messageContent = `
+                <div>
+                    <div class="message-content">${escapeHtml(text)}</div>
+            `;
+            
+            if (fileInfo) {
+                messageContent += `
+                    <div class="file-attachment">
+                        <div class="file-icon">📄</div>
+                        <div class="file-info">
+                            <div class="file-name">${fileInfo.filename}</div>
+                            <div class="file-size">${formatFileSize(fileInfo.size)}</div>
+                        </div>
+                        <button class="analyze-button" onclick="analyzeFile('${fileInfo.id}')" id="analyze-${fileInfo.id}">
+                            Analyze
+                        </button>
+                    </div>
+                `;
+            }
+            
+            messageContent += `
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            messageDiv.innerHTML = messageContent;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function addAnalysisResult(analysis, findings) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div>
+                    <div class="message-content">
+                        <div class="analysis-result">
+                            <div class="analysis-header">
+                                🔍 Log Analysis Results
+                            </div>
+                            <div class="analysis-content">${escapeHtml(analysis)}</div>
+                        </div>
+                    </div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function toggleFileUpload() {
+            const uploadArea = document.getElementById('fileUploadArea');
+            uploadArea.classList.toggle('show');
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(event) {
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            event.currentTarget.classList.remove('drag-over');
+            
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        }
+
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                handleFiles(files);
+            }
+        }
+
+        async function handleFiles(files) {
+            for (let file of files) {
+                await uploadFile(file);
+            }
+            
+            // Hide upload area after successful upload
+            document.getElementById('fileUploadArea').classList.remove('show');
+        }
+
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    uploadedFiles.push(data.file);
+                    addMessage(`Uploaded file: ${file.name}`, 'user', data.file);
+                } else {
+                    addMessage(`Failed to upload ${file.name}: ${data.error}`, 'assistant');
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                addMessage(`Error uploading ${file.name}`, 'assistant');
+            }
+        }
+
+        async function analyzeFile(fileId) {
+            const button = document.getElementById(`analyze-${fileId}`);
+            button.disabled = true;
+            button.textContent = 'Analyzing...';
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').classList.add('show');
+            
+            try {
+                const response = await fetch(`/analyze/${fileId}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addAnalysisResult(data.analysis, data.findings);
+                    button.textContent = 'Analyzed';
+                } else {
+                    addMessage(`Error analyzing file: ${data.error}`, 'assistant');
+                    button.disabled = false;
+                    button.textContent = 'Analyze';
+                }
+            } catch (error) {
+                console.error('Error analyzing file:', error);
+                addMessage('Error analyzing file. Please try again.', 'assistant');
+                button.disabled = false;
+                button.textContent = 'Analyze';
+            } finally {
+                document.getElementById('loadingIndicator').classList.remove('show');
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        async function clearChat() {
+            if (confirm('Are you sure you want to clear the conversation?')) {
+                try {
+                    await fetch('/clear', { method: 'POST' });
+                    
+                    // Clear chat display
+                    const chatContainer = document.getElementById('chatContainer');
+                    chatContainer.innerHTML = `
+                        <div class="message assistant">
+                            <div>
+                                <div class="message-content">Conversation cleared. How can I help you today?</div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Clear uploaded files
+                    uploadedFiles = [];
+                } catch (error) {
+                    console.error('Error clearing chat:', error);
+                }
+            }
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('open');
+        }
+
+        async function updateTemperature(value) {
+            document.getElementById('temperatureValue').textContent = value;
+            
+            try {
+                await fetch('/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ temperature: parseFloat(value) })
+                });
+            } catch (error) {
+                console.error('Error updating temperature:', error);
+            }
+        }
+
+        async function updateMaxTokens(value) {
+            document.getElementById('maxTokensValue').textContent = `${value} tokens`;
+            
+            try {
+                await fetch('/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ max_tokens: parseInt(value) })
+                });
+            } catch (error) {
+                console.error('Error updating max tokens:', error);
+            }
+        }
+
+        async function getStatus() {
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                
+                document.getElementById('deviceInfo').textContent = `Device: ${data.device.toUpperCase()}`;
+                document.getElementById('temperatureSlider').value = data.temperature;
+                document.getElementById('temperatureValue').textContent = data.temperature;
+                document.getElementById('maxTokensSlider').value = data.max_tokens;
+                document.getElementById('maxTokensValue').textContent = `${data.max_tokens} tokens`;
+            } catch (error) {
+                console.error('Error getting status:', error);
+            }
+        }
+
+        async function downloadHistory() {
+            try {
+                const response = await fetch('/history');
+                const data = await response.json();
+                
+                let text = 'Phi-3 Chat History\n';
+                text += '==================\n\n';
+                
+                data.history.forEach((turn, index) => {
+                    text += `Turn ${index + 1}\n`;
+                    text += `Time: ${new Date(turn.timestamp).toLocaleString()}\n`;
+                    text += `User: ${turn.user}\n`;
+                    text += `Assistant: ${turn.assistant}\n\n`;
+                });
+                
+                // Create download
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `phi3-chat-${new Date().toISOString().split('T')[0]}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading history:', error);
+            }
+        }
+    </script>
+</body>
+</html>
