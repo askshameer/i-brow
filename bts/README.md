@@ -42,7 +42,7 @@ A modern, responsive bug tracking portal built with React and Tailwind CSS, desi
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
+   git clone https://github.com/askshameer/i-brow.git
    cd AI_Solution/bts
    ```
 
@@ -351,6 +351,6 @@ For more information about the complete AI_Solution project, see the main [READM
 ---
 
 **Version**: 1.0.0  
-**Last Updated**: May 2024  
-**Maintainer**: Your Name  
-**Contact**: your.email@example.com
+**Last Updated**: May 2025  
+**Maintainer**: Shameer Mohammed
+**Contact**: mohammed.shameer@hotmail.com
