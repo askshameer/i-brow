@@ -1,0 +1,904 @@
+{
+  "bugs": [
+    {
+      "id": "BUG-DEMO-1748084066155-0",
+      "title": "HDMI audio not working with AMD RX 6700 graphics card",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.1.0-13\n- Desktop: Cinnamon 5.8\n- Affected Package: PipeWire (525.125.06)\n\n**Steps to Reproduce:**\n1. Install snd_hda_intel driver version 470.199.02\n2. Reboot system\n3. Open OBS Studio\n4. Play WebM audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-12\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "low",
+      "category": "Video",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-04-11T15:26:14.895Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-1",
+      "title": "System freeze when switching audio output to AMD HDMI",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 5.19.0-50\n- Desktop: GNOME 44\n- Affected Package: amdgpu (6.5.0)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Behringer UMC22\n3. Play audio file using Kdenlive\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Discord or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-21\n- Reproducibility: Random\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "high",
+      "category": "Multimedia",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-05-10T08:14:58.141Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-2",
+      "title": "No sound output after system suspend/resume on Behringer UMC22",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.2.0-35\n- Desktop: KDE Plasma 5.27\n- Affected Package: PulseAudio (1.2.3)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Razer Kiyo\n3. Play audio file using Audacity\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Chrome or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-04-28\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "critical",
+      "category": "Kernel",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-05-17T14:34:54.416Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S1-Critical",
+      "reproducibility": "Always",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-3",
+      "title": "Audio device switching broken in Cinnamon 5.8 environment",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.1.0-13\n- Desktop: Cinnamon 5.8\n- Affected Package: i915 (2.0.1)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to NVIDIA HDMI\n3. Play audio file using Firefox\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart GIMP or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-08\n- Reproducibility: Intermittent (50%)\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "high",
+      "category": "Audio",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-11T09:55:53.063Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-4",
+      "title": "Screen recording fails with Kdenlive on Wayland",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.1.0-13\n- Desktop: XFCE 4.18\n- Affected Package: snd_hda_intel (470.199.02)\n\n**Steps to Reproduce:**\n1. Boot system with NVIDIA RTX 3060 graphics\n2. Update driver to version 470.199.02\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-05-14\n- Reproducibility: Always\n- Workaround: None found",
+      "status": "new",
+      "priority": "low",
+      "category": "Multimedia",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-05-06T00:11:27.512Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Always",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-5",
+      "title": "System freeze when switching audio output to Razer Kiyo",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.5.0-14\n- Desktop: XFCE 4.18\n- Affected Package: v4l2 (525.125.06)\n\n**Steps to Reproduce:**\n1. Install nouveau driver version 4.1.2\n2. Reboot system\n3. Open Teams\n4. Play OGG audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-04-25\n- Reproducibility: Random\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "critical",
+      "category": "Multimedia",
+      "assignedTo": "Alice Brown",
+      "createdAt": "2025-04-04T11:31:19.220Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S3-Minor",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-6",
+      "title": "Audio device switching broken in KDE Plasma 5.27 environment",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.2.0-35\n- Desktop: XFCE 4.18\n- Affected Package: ALSA (2.0.1)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Realtek ALC892\n3. Play audio file using Discord\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Blender or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-05\n- Reproducibility: Intermittent (70%)\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "high",
+      "category": "Audio",
+      "assignedTo": "Frank Miller",
+      "createdAt": "2025-04-10T03:38:29.494Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S1-Critical",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-7",
+      "title": "Black screen after installing ALSA driver version 6.5.0",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.1.0-13\n- Desktop: KDE Plasma 5.27\n- Affected Package: PulseAudio (2.0.1)\n\n**Steps to Reproduce:**\n1. Install AMD RX 6700 driver version 6.5.0\n2. Enable hardware acceleration in Kdenlive\n3. Open video file in H.265/HEVC format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-05-09\n- Reproducibility: Intermittent (70%)\n- Workaround: None found",
+      "status": "new",
+      "priority": "medium",
+      "category": "Video",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-03-25T13:30:35.013Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S1-Critical",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-8",
+      "title": "Audio sync issues with VP9 container",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: amdgpu (3.5.0)\n\n**Steps to Reproduce:**\n1. Install PipeWire driver version 470.199.02\n2. Reboot system\n3. Open Blender\n4. Play WebM audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-04-28\n- Reproducibility: Intermittent (50%)\n- Workaround: None found",
+      "status": "new",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-04-17T01:14:34.447Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Random",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-9",
+      "title": "Green screen in video calls with Behringer UMC22 webcam",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.2.0-35\n- Desktop: GNOME 44\n- Affected Package: PipeWire (6.5.0)\n\n**Steps to Reproduce:**\n1. Install AMD RX 580 driver version 4.1.2\n2. Enable hardware acceleration in DaVinci Resolve\n3. Open video file in MOV format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-05-23\n- Reproducibility: Always\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "high",
+      "category": "Hardware",
+      "assignedTo": "Alice Brown",
+      "createdAt": "2025-04-04T07:42:15.562Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Sometimes",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-10",
+      "title": "Hardware acceleration disabled after driver update",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: v4l2 (3.5.0)\n\n**Steps to Reproduce:**\n1. Download PulseAudio driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe nouveau'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in amdgpu_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-22\n- Reproducibility: Always\n- Workaround: None found",
+      "status": "new",
+      "priority": "medium",
+      "category": "Audio",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-05-06T20:08:09.398Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Random",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-11",
+      "title": "Cannot play VP9 files after codec update",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 5.19.0-50\n- Desktop: XFCE 4.18\n- Affected Package: snd_hda_intel (2.0.1)\n\n**Steps to Reproduce:**\n1. Install gstreamer codec package\n2. Open Audacity\n3. Load MP3 media file\n4. Attempt to play file\n\n**Expected Result:**\nMedia file plays with hardware acceleration\n\n**Actual Result:**\nPlayback fails with 'Unsupported codec' error\n\n**Additional Information:**\n- First noticed after system update on 2025-05-23\n- Reproducibility: Intermittent (50%)\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "low",
+      "category": "Driver",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-05-01T10:17:54.974Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-12",
+      "title": "Microphone not detected on Blue Yeti with nvidia-525 driver",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 6.1.0-13\n- Desktop: KDE Plasma 5.27\n- Affected Package: v4l2 (470.199.02)\n\n**Steps to Reproduce:**\n1. Download amdgpu driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe snd_hda_intel'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in ALSA_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-23\n- Reproducibility: Intermittent (50%)\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-05-04T07:53:07.527Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S4-Trivial",
+      "reproducibility": "Random",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-13",
+      "title": "Audio device switching broken in XFCE 4.18 environment",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.1.0-13\n- Desktop: Cinnamon 5.8\n- Affected Package: PipeWire (470.199.02)\n\n**Steps to Reproduce:**\n1. Install amdgpu driver version 470.199.02\n2. Reboot system\n3. Open Kdenlive\n4. Play MOV audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-10\n- Reproducibility: Always\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "medium",
+      "category": "Multimedia",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-17T15:14:13.011Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S2-Major",
+      "reproducibility": "Always",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-14",
+      "title": "Memory leak in ALSA driver version 470.199.02",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.5.0-14\n- Desktop: GNOME 44\n- Affected Package: nvidia-525 (2.0.1)\n\n**Steps to Reproduce:**\n1. Download amdgpu driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe snd_hda_intel'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in nvidia-525_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-13\n- Reproducibility: Always\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "low",
+      "category": "Kernel",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-09T22:09:35.135Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S1-Critical",
+      "reproducibility": "Random",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-15",
+      "title": "No sound output after system suspend/resume on Logitech C920",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 6.1.0-13\n- Desktop: Cinnamon 5.8\n- Affected Package: nouveau (3.5.0)\n\n**Steps to Reproduce:**\n1. Install PipeWire driver version 1.2.3\n2. Reboot system\n3. Open Steam\n4. Play MP3 audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-18\n- Reproducibility: Intermittent (50%)\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "high",
+      "category": "Hardware",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-03-27T02:21:47.962Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S4-Trivial",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-16",
+      "title": "snd_hda_intel driver fails to compile on kernel 470.199.02",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.2.0-35\n- Desktop: Cinnamon 5.8\n- Affected Package: nouveau (3.5.0)\n\n**Steps to Reproduce:**\n1. Download i915 driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe PipeWire'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in amdgpu_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-01\n- Reproducibility: Always\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-05-22T13:16:49.368Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-17",
+      "title": "Green screen in video calls with Focusrite Scarlett webcam",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: PulseAudio (4.1.2)\n\n**Steps to Reproduce:**\n1. Boot system with NVIDIA RTX 3060 graphics\n2. Update driver to version 470.199.02\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "low",
+      "category": "Driver",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-05-12T11:46:35.290Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-18",
+      "title": "Screen tearing in VLC with NVIDIA GTX 1660 driver 2.0.1",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 5.15.0-88\n- Desktop: GNOME 44\n- Affected Package: i915 (525.125.06)\n\n**Steps to Reproduce:**\n1. Boot system with AMD RX 580 graphics\n2. Update driver to version 525.125.06\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Intermittent (50%)\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "low",
+      "category": "Multimedia",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-05-17T11:41:55.002Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S1-Critical",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-19",
+      "title": "Kernel panic when loading PulseAudio module",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 6.5.0-14\n- Desktop: GNOME 44\n- Affected Package: nouveau (2.0.1)\n\n**Steps to Reproduce:**\n1. Download v4l2 driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe nvidia-470'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in PulseAudio_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-22\n- Reproducibility: Always\n- Workaround: None found",
+      "status": "new",
+      "priority": "critical",
+      "category": "Multimedia",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-05-11T16:18:17.032Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-20",
+      "title": "Memory leak in PulseAudio driver version 525.125.06",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 5.15.0-88\n- Desktop: KDE Plasma 5.27\n- Affected Package: nvidia-525 (3.5.0)\n\n**Steps to Reproduce:**\n1. Download nouveau driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe nouveau'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in v4l2_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-21\n- Reproducibility: Intermittent (70%)\n- Workaround: None found",
+      "status": "new",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-03-27T00:39:23.854Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S1-Critical",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-21",
+      "title": "Multiple monitor setup broken after v4l2 update",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 5.19.0-50\n- Desktop: GNOME 44\n- Affected Package: nvidia-470 (470.199.02)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Logitech C920\n3. Play audio file using GIMP\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Teams or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Intermittent (50%)\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "low",
+      "category": "Performance",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-05-08T21:56:29.355Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-22",
+      "title": "Webcam not recognized in OBS Studio on Arch Linux",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.2.0-35\n- Desktop: XFCE 4.18\n- Affected Package: i915 (4.1.2)\n\n**Steps to Reproduce:**\n1. Connect Logitech C920 webcam via USB\n2. Open Audacity\n3. Navigate to video settings\n4. Select Razer Kiyo as video input\n5. Start video preview\n\n**Expected Result:**\nWebcam feed displays normally\n\n**Actual Result:**\nApplication shows 'No camera found' error\n\n**Additional Information:**\n- First noticed after system update on 2025-05-15\n- Reproducibility: Random\n- Workaround: None found",
+      "status": "new",
+      "priority": "critical",
+      "category": "Audio",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-04-30T05:09:04.453Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-23",
+      "title": "Webcam not recognized in Spotify on Pop!_OS 22.04",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.1.0-13\n- Desktop: Cinnamon 5.8\n- Affected Package: nvidia-470 (6.5.0)\n\n**Steps to Reproduce:**\n1. Connect USB DAC webcam via USB\n2. Open Discord\n3. Navigate to video settings\n4. Select USB DAC as video input\n5. Start video preview\n\n**Expected Result:**\nWebcam feed displays normally\n\n**Actual Result:**\nApplication shows 'No camera found' error\n\n**Additional Information:**\n- First noticed after system update on 2025-05-05\n- Reproducibility: Intermittent (50%)\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "high",
+      "category": "Audio",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-04-21T23:20:28.511Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S1-Critical",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-24",
+      "title": "No sound output after system suspend/resume on Focusrite Scarlett",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.5.0-14\n- Desktop: GNOME 44\n- Affected Package: PulseAudio (525.125.06)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to USB DAC\n3. Play audio file using OBS Studio\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Audacity or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-15\n- Reproducibility: Random\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "medium",
+      "category": "Driver",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-05-16T01:43:34.913Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Sometimes",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-25",
+      "title": "Low FPS on Focusrite Scarlett webcam with v4l2 driver",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 5.15.0-88\n- Desktop: KDE Plasma 5.27\n- Affected Package: PulseAudio (1.2.3)\n\n**Steps to Reproduce:**\n1. Connect Realtek ALC892 webcam via USB\n2. Open Blender\n3. Navigate to video settings\n4. Select Intel HDA as video input\n5. Start video preview\n\n**Expected Result:**\nWebcam feed displays normally\n\n**Actual Result:**\nApplication shows 'No camera found' error\n\n**Additional Information:**\n- First noticed after system update on 2025-05-23\n- Reproducibility: Intermittent (50%)\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "critical",
+      "category": "Kernel",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-04-22T00:40:45.235Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-26",
+      "title": "Hardware acceleration disabled after kernel update",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.2.0-35\n- Desktop: GNOME 44\n- Affected Package: nvidia-470 (4.1.2)\n\n**Steps to Reproduce:**\n1. Download nvidia-470 driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe PipeWire'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in ALSA_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-04-28\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "medium",
+      "category": "Hardware",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-23T11:21:13.882Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-27",
+      "title": "Screen tearing in Blender with Intel Iris Xe driver 3.5.0",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.2.0-35\n- Desktop: KDE Plasma 5.27\n- Affected Package: amdgpu (6.5.0)\n\n**Steps to Reproduce:**\n1. Install Intel Iris Xe driver version 1.2.3\n2. Enable hardware acceleration in Firefox\n3. Open video file in VP9 format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-05-13\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "low",
+      "category": "Driver",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-05-13T18:44:19.597Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-28",
+      "title": "Audio crackling when playing OGG files with nvidia-470",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 5.15.0-88\n- Desktop: Cinnamon 5.8\n- Affected Package: PipeWire (6.5.0)\n\n**Steps to Reproduce:**\n1. Install nouveau driver version 4.1.2\n2. Reboot system\n3. Open Chrome\n4. Play WAV audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-15\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "critical",
+      "category": "Hardware",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-04-03T10:13:54.538Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Always",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-29",
+      "title": "System boot hangs with snd_hda_intel driver enabled",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.1.0-13\n- Desktop: KDE Plasma 5.27\n- Affected Package: snd_hda_intel (525.125.06)\n\n**Steps to Reproduce:**\n1. Download amdgpu driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe PulseAudio'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in amdgpu_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-23\n- Reproducibility: Always\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "high",
+      "category": "Hardware",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-05-20T04:50:17.398Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S4-Trivial",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-30",
+      "title": "Memory leak in PipeWire driver version 4.1.2",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 5.19.0-50\n- Desktop: Cinnamon 5.8\n- Affected Package: nouveau (3.5.0)\n\n**Steps to Reproduce:**\n1. Download nouveau driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe PulseAudio'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in nvidia-470_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-06\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "critical",
+      "category": "Performance",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-04-04T13:04:35.062Z",
+      "releaseVersion": "v2.2.0-rc1",
+      "severity": "S4-Trivial",
+      "reproducibility": "Sometimes",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-31",
+      "title": "Black screen after installing PipeWire driver version 525.125.06",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.1.0-13\n- Desktop: GNOME 44\n- Affected Package: ALSA (1.2.3)\n\n**Steps to Reproduce:**\n1. Boot system with AMD RX 6700 graphics\n2. Update driver to version 2.0.1\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-05-07\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "critical",
+      "category": "Hardware",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-07T06:59:02.278Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-32",
+      "title": "Bluetooth audio disconnects randomly on Blue Yeti",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.1.0-13\n- Desktop: GNOME 44\n- Affected Package: nvidia-470 (525.125.06)\n\n**Steps to Reproduce:**\n1. Install v4l2 driver version 525.125.06\n2. Reboot system\n3. Open Kdenlive\n4. Play WebM audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-20\n- Reproducibility: Intermittent (70%)\n- Workaround: Use different application",
+      "status": "new",
+      "priority": "high",
+      "category": "Multimedia",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-04-28T03:19:38.623Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S3-Minor",
+      "reproducibility": "Once",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-33",
+      "title": "amdgpu driver fails to compile on kernel 1.2.3",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 5.19.0-50\n- Desktop: Cinnamon 5.8\n- Affected Package: amdgpu (525.125.06)\n\n**Steps to Reproduce:**\n1. Install Intel Iris Xe driver version 470.199.02\n2. Enable hardware acceleration in GIMP\n3. Open video file in FLAC format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-05-19\n- Reproducibility: Intermittent (70%)\n- Workaround: None found",
+      "status": "new",
+      "priority": "high",
+      "category": "Driver",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-04-09T16:44:59.705Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Random",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-34",
+      "title": "Media keys not working with VLC on Cinnamon 5.8",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.1.0-13\n- Desktop: GNOME 44\n- Affected Package: nvidia-525 (6.5.0)\n\n**Steps to Reproduce:**\n1. Install i915 driver version 4.1.2\n2. Reboot system\n3. Open Zoom\n4. Play MP4 audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-21\n- Reproducibility: Always\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "high",
+      "category": "Video",
+      "assignedTo": "Alice Brown",
+      "createdAt": "2025-04-09T17:51:52.285Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S1-Critical",
+      "reproducibility": "Once",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-35",
+      "title": "HDMI audio not working with Intel UHD 630 graphics card",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 5.19.0-50\n- Desktop: XFCE 4.18\n- Affected Package: nouveau (470.199.02)\n\n**Steps to Reproduce:**\n1. Install v4l2 driver version 2.0.1\n2. Reboot system\n3. Open Blender\n4. Play FLAC audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-20\n- Reproducibility: Always\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "medium",
+      "category": "Video",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-04-26T00:53:01.036Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-36",
+      "title": "Codec conflict between x265 and ffmpeg",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.5.0-14\n- Desktop: KDE Plasma 5.27\n- Affected Package: ALSA (525.125.06)\n\n**Steps to Reproduce:**\n1. Install VA-API codec package\n2. Open Teams\n3. Load H.264 media file\n4. Attempt to play file\n\n**Expected Result:**\nMedia file plays with hardware acceleration\n\n**Actual Result:**\nPlayback fails with 'Unsupported codec' error\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Always\n- Workaround: None found",
+      "status": "new",
+      "priority": "medium",
+      "category": "Multimedia",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-05-05T18:35:47.608Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S3-Minor",
+      "reproducibility": "Sometimes",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-37",
+      "title": "Audio volume resets to 100% after reboot",
+      "description": "**Environment:**\n- OS: Fedora 38\n- Kernel: 5.15.0-88\n- Desktop: Cinnamon 5.8\n- Affected Package: v4l2 (3.5.0)\n\n**Steps to Reproduce:**\n1. Install snd_hda_intel driver version 1.2.3\n2. Reboot system\n3. Open Audacity\n4. Play OGG audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Intermittent (70%)\n- Workaround: None found",
+      "status": "new",
+      "priority": "critical",
+      "category": "Performance",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-04-03T21:01:29.956Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S4-Trivial",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-38",
+      "title": "No audio in DaVinci Resolve after kernel update to 6.5.0",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 5.19.0-50\n- Desktop: Cinnamon 5.8\n- Affected Package: amdgpu (470.199.02)\n\n**Steps to Reproduce:**\n1. Download i915 driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe i915'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in nvidia-470_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-02\n- Reproducibility: Intermittent (50%)\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "critical",
+      "category": "Kernel",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-04-16T09:16:40.976Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-39",
+      "title": "Audio volume resets to 100% after reboot",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: nvidia-525 (4.1.2)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Logitech C920\n3. Play audio file using DaVinci Resolve\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Teams or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-04-25\n- Reproducibility: Always\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "Frank Miller",
+      "createdAt": "2025-04-11T01:26:39.415Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Random",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-40",
+      "title": "WebGL crashes in Chromium with AMD RX 6700 driver",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.5.0-14\n- Desktop: KDE Plasma 5.27\n- Affected Package: snd_hda_intel (6.5.0)\n\n**Steps to Reproduce:**\n1. Download nouveau driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe ALSA'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in PipeWire_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-04-26\n- Reproducibility: Intermittent (50%)\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "critical",
+      "category": "Audio",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-04-14T16:33:30.998Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-41",
+      "title": "Kernel panic when loading nvidia-525 module",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.2.0-35\n- Desktop: KDE Plasma 5.27\n- Affected Package: i915 (2.0.1)\n\n**Steps to Reproduce:**\n1. Download nvidia-525 driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe i915'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in ALSA_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-07\n- Reproducibility: Intermittent (70%)\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "medium",
+      "category": "Multimedia",
+      "assignedTo": "David Lee",
+      "createdAt": "2025-05-10T18:49:46.051Z",
+      "releaseVersion": "v2.1.0",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-42",
+      "title": "Video artifacts when decoding H.265/HEVC with gstreamer",
+      "description": "**Environment:**\n- OS: Ubuntu 22.04\n- Kernel: 6.5.0-14\n- Desktop: GNOME 44\n- Affected Package: nvidia-525 (3.5.0)\n\n**Steps to Reproduce:**\n1. Boot system with Intel Iris Xe graphics\n2. Update driver to version 4.1.2\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-05-03\n- Reproducibility: Always\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "low",
+      "category": "Driver",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-04-29T01:46:25.154Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Always",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-43",
+      "title": "Low FPS on Behringer UMC22 webcam with PipeWire driver",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: nvidia-525 (6.5.0)\n\n**Steps to Reproduce:**\n1. Connect Realtek ALC892 webcam via USB\n2. Open Teams\n3. Navigate to video settings\n4. Select Razer Kiyo as video input\n5. Start video preview\n\n**Expected Result:**\nWebcam feed displays normally\n\n**Actual Result:**\nApplication shows 'No camera found' error\n\n**Additional Information:**\n- First noticed after system update on 2025-05-04\n- Reproducibility: Intermittent (50%)\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "medium",
+      "category": "Audio",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-04-06T10:21:57.191Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Always",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-44",
+      "title": "Green screen in video calls with Focusrite Scarlett webcam",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: i915 (6.5.0)\n\n**Steps to Reproduce:**\n1. Install AMD RX 580 driver version 2.0.1\n2. Enable hardware acceleration in Steam\n3. Open video file in WebM format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-04-28\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "medium",
+      "category": "Performance",
+      "assignedTo": "Bob Johnson",
+      "createdAt": "2025-05-07T19:49:19.933Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S3-Minor",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "multimedia"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-45",
+      "title": "Hardware acceleration disabled after kernel update",
+      "description": "**Environment:**\n- OS: Arch Linux\n- Kernel: 6.2.0-35\n- Desktop: KDE Plasma 5.27\n- Affected Package: nouveau (6.5.0)\n\n**Steps to Reproduce:**\n1. Download ALSA driver source\n2. Run 'make && make install'\n3. Load module with 'modprobe snd_hda_intel'\n4. Check dmesg for errors\n\n**Expected Result:**\nDriver loads without errors\n\n**Actual Result:**\nKernel panic with call trace in nvidia-525_init function\n\n**Additional Information:**\n- First noticed after system update on 2025-05-16\n- Reproducibility: Always\n- Workaround: Downgrade driver",
+      "status": "new",
+      "priority": "medium",
+      "category": "Performance",
+      "assignedTo": "Charlie Wilson",
+      "createdAt": "2025-04-25T14:33:23.135Z",
+      "releaseVersion": "v2.1.1",
+      "severity": "S2-Major",
+      "reproducibility": "Sometimes",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "audio"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-46",
+      "title": "System freeze when switching audio output to Razer Kiyo",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 5.19.0-50\n- Desktop: GNOME 44\n- Affected Package: snd_hda_intel (3.5.0)\n\n**Steps to Reproduce:**\n1. Install v4l2 driver version 6.5.0\n2. Reboot system\n3. Open Audacity\n4. Play MP3 audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-05-16\n- Reproducibility: Always\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "critical",
+      "category": "Audio",
+      "assignedTo": "Jane Smith",
+      "createdAt": "2025-03-26T23:49:27.072Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Once",
+      "platform": "x86_64",
+      "tags": [
+        "demo-data",
+        "video"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-47",
+      "title": "Low FPS on Behringer UMC22 webcam with amdgpu driver",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 6.1.0-13\n- Desktop: XFCE 4.18\n- Affected Package: ALSA (1.2.3)\n\n**Steps to Reproduce:**\n1. Install AMD RX 580 driver version 1.2.3\n2. Enable hardware acceleration in Chrome\n3. Open video file in FLAC format\n4. Play video at fullscreen\n5. Observe playback quality\n\n**Expected Result:**\nSmooth video playback without artifacts\n\n**Actual Result:**\nScreen tearing visible, especially during fast motion scenes\n\n**Additional Information:**\n- First noticed after system update on 2025-05-22\n- Reproducibility: Intermittent (70%)\n- Workaround: Disable hardware acceleration",
+      "status": "new",
+      "priority": "critical",
+      "category": "Hardware",
+      "assignedTo": "John Doe",
+      "createdAt": "2025-04-15T17:48:06.396Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S4-Trivial",
+      "reproducibility": "Sometimes",
+      "platform": "armhf",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-48",
+      "title": "Audio volume resets to 100% after reboot",
+      "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 5.15.0-88\n- Desktop: GNOME 44\n- Affected Package: ALSA (525.125.06)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Logitech C920\n3. Play audio file using Teams\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Kdenlive or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-19\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "critical",
+      "category": "Driver",
+      "assignedTo": "Emma Davis",
+      "createdAt": "2025-04-02T23:17:16.750Z",
+      "releaseVersion": "v2.2.0-beta",
+      "severity": "S3-Minor",
+      "reproducibility": "Random",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "kernel"
+      ]
+    },
+    {
+      "id": "BUG-DEMO-1748084066155-49",
+      "title": "Audio volume resets to 100% after reboot",
+      "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 6.5.0-14\n- Desktop: XFCE 4.18\n- Affected Package: PipeWire (6.5.0)\n\n**Steps to Reproduce:**\n1. Install PipeWire driver version 6.5.0\n2. Reboot system\n3. Open GIMP\n4. Play MKV audio file\n5. Listen for audio quality\n\n**Expected Result:**\nAudio plays clearly without distortion\n\n**Actual Result:**\nCrackling and popping sounds throughout playback\n\n**Additional Information:**\n- First noticed after system update on 2025-04-24\n- Reproducibility: Random\n- Workaround: Switch to different codec",
+      "status": "new",
+      "priority": "critical",
+      "category": "Performance",
+      "assignedTo": "Alice Brown",
+      "createdAt": "2025-04-19T06:02:13.194Z",
+      "releaseVersion": "v2.0.0",
+      "severity": "S2-Major",
+      "reproducibility": "Once",
+      "platform": "aarch64",
+      "tags": [
+        "demo-data",
+        "driver"
+      ]
+    }
+  ]
+}

@@ -1,40 +1,69 @@
 
 # Bug Tracking System (BTS)
 
-A modern, responsive bug tracking portal built with React and Tailwind CSS, designed to streamline bug reporting and management for development teams.
+A modern, full-stack bug tracking portal built with React and Node.js, designed to streamline bug reporting and management for development teams with a focus on Linux/Multimedia driver testing.
 
 ## 📋 Table of Contents
 
 - [Features](#features)
+- [Technology Stack](#technology-stack)
 - [Requirements](#requirements)
 - [Installation](#installation)
+- [Running the Application](#running-the-application)
 - [Usage Guide](#usage-guide)
 - [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
 - [Configuration](#configuration)
-- [API Integration](#api-integration)
+- [Data Persistence](#data-persistence)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
+- [Security Considerations](#security-considerations)
 - [License](#license)
 
 ## ✨ Features
 
+### Core Functionality
 - **User-Friendly Interface**: Clean, modern UI built with React and Tailwind CSS
 - **Real-time Updates**: Instant bug status updates and notifications
 - **Comprehensive Bug Management**:
   - Create, view, edit, and delete bug reports
   - Priority levels (Low, Medium, High, Critical)
-  - Status tracking (Open, In Progress, Resolved, Closed)
-  - Category classification
+  - Status tracking (New, Open, In Progress, Resolved, Closed)
+  - Category classification optimized for Linux/driver testing
 - **Search & Filter**: Advanced filtering by status, priority, category, and date
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 - **Export Functionality**: Export bug reports to CSV format
-- **Local Storage**: Data persistence using browser's local storage
+- **Persistent Storage**: JSON file-based backend storage (replaced localStorage)
+
+### New Features (v2.0.0)
+- **Full-Stack Architecture**: Separated frontend and backend with RESTful API
+- **View Mode**: Detailed read-only view with formatted description display
+- **Bug Generator**: One-time generation of 50 test bugs for Linux/driver testing
+- **Statistics Dashboard**: Real-time bug metrics with visual indicators
+- **Connection Status**: Visual indicator of backend connection status
+- **Refresh Capability**: Manual sync with backend database
+- **Enhanced Categories**: Driver, Multimedia, Kernel, Hardware, Audio, Video, Performance, Network, Security
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **React 18**: Modern React with hooks
+- **Tailwind CSS**: Utility-first CSS framework
+- **Lucide React**: Beautiful icon library
+- **Fetch API**: For backend communication
+
+### Backend
+- **Node.js**: JavaScript runtime
+- **Express.js**: Web application framework
+- **CORS**: Cross-origin resource sharing
+- **File System**: JSON file-based persistence
 
 ## 📋 Requirements
 
 - Node.js (v14.0.0 or higher)
 - npm (v6.0.0 or higher)
 - Modern web browser (Chrome, Firefox, Safari, Edge)
+- Two terminal windows (for running frontend and backend)
 
 ## 🚀 Installation
 
@@ -46,18 +75,41 @@ A modern, responsive bug tracking portal built with React and Tailwind CSS, desi
    cd AI_Solution/bts
    ```
 
-2. **Install dependencies**
+2. **Install Backend Dependencies**
+   ```bash
+   cd backend
+   npm install
+   cd ..
+   ```
+
+3. **Install Frontend Dependencies**
    ```bash
    npm install
    ```
 
-3. **Start the development server**
-   ```bash
-   npm start
-   ```
+## 🏃 Running the Application
 
-4. **Access the application**
-   Open your browser and navigate to `http://localhost:3000`
+The BTS requires both frontend and backend servers to be running:
+
+### Terminal 1 - Backend Server (Port 3001)
+```bash
+cd backend
+npm start
+```
+
+You should see:
+```
+BTS Backend running on http://localhost:3001
+Database file: [path]\bugs_database.json
+```
+
+### Terminal 2 - Frontend Application (Port 3000)
+```bash
+# In the main bts directory
+npm start
+```
+
+The application will open automatically at `http://localhost:3000`
 
 ### Production Build
 
@@ -77,9 +129,10 @@ The optimized files will be in the `build/` directory.
 2. Fill in the required fields:
    - **Title**: Brief description of the bug
    - **Description**: Detailed explanation of the issue
-   - **Category**: Select from dropdown (UI, Backend, Database, etc.)
+   - **Category**: Select from dropdown (Driver, Multimedia, Kernel, etc.)
    - **Priority**: Choose priority level
    - **Assigned To**: Enter the assignee's name
+   - **Release Version**: Specify the version (optional)
 
 3. Click **"Submit"** to create the bug report
 
@@ -94,6 +147,12 @@ The optimized files will be in the `build/` directory.
   - Category tag
   - Creation date
   - Assigned person
+  - Three action buttons: View (👁️), Edit (✏️), Delete (🗑️)
+
+#### Viewing Bug Details
+1. Click the **view icon** (👁️) on any bug card
+2. See complete bug information in a modal
+3. Option to edit directly from the view modal
 
 #### Editing Bugs
 1. Click the **edit icon** (✏️) on any bug card
@@ -107,10 +166,20 @@ The optimized files will be in the `build/` directory.
 #### Changing Bug Status
 - Click the **status dropdown** on any bug card
 - Select the new status:
+  - 🟣 New
   - 🔵 Open
   - 🟡 In Progress
   - 🟢 Resolved
   - ⚫ Closed
+
+### Using the Bug Generator
+
+1. Click the **"Bug Generator"** button (only available when no demo bugs exist)
+2. Automatically generates 50 test bugs with:
+   - Realistic Linux/driver-related issues
+   - Various priorities and categories
+   - Sample descriptions and steps to reproduce
+   - Demo-data tag for identification
 
 ### Filtering and Searching
 
@@ -119,29 +188,27 @@ The optimized files will be in the `build/` directory.
   - Title
   - Description
   - Bug ID
-  - Assigned person
 
 #### Filter Options
 Click the **"Filters"** button to access:
 - **Status Filter**: Show only bugs with specific status
 - **Priority Filter**: Filter by priority level
 - **Category Filter**: Display bugs from specific categories
-- **Date Range**: Filter bugs created within a date range
 
 ### Exporting Data
 
 1. Apply desired filters (optional)
 2. Click the **"Export"** button
-3. Choose export format (currently CSV)
-4. The file will download automatically
+3. CSV file will download automatically with filtered results
 
 ### Statistics Dashboard
 
-View real-time statistics including:
+Click **"Stats"** to view:
 - Total number of bugs
-- Bugs by status (pie chart)
-- Bugs by priority (bar chart)
-- Recent activity timeline
+- Open bugs count
+- In Progress count
+- Resolved bugs count
+- Storage information and backend status
 
 ## 📁 Project Structure
 
@@ -152,19 +219,53 @@ bts/
 │   └── favicon.ico         # App icon
 ├── src/
 │   ├── components/         # React components
-│   │   ├── BugList.js     # Bug listing component
-│   │   ├── BugForm.js     # Bug creation/edit form
-│   │   ├── FilterBar.js   # Filter controls
-│   │   └── Stats.js       # Statistics dashboard
-│   ├── utils/             # Utility functions
-│   │   ├── storage.js     # Local storage helpers
-│   │   └── export.js      # Export functionality
-│   ├── App.js             # Main app component
-│   ├── App.css            # Tailwind directives
+│   │   └── BugGenerator.js # Test data generator
+│   ├── App.js             # Main app component with all logic
+│   ├── index.css          # Tailwind CSS imports
 │   └── index.js           # React entry point
-├── package.json           # Dependencies and scripts
+├── backend/
+│   ├── server.js          # Express server with API routes
+│   ├── package.json       # Backend dependencies
+│   ├── bugs_database.json # Persistent storage (auto-created)
+│   └── .gitignore         # Excludes node_modules and database
+├── docs/
+│   └── BTS_User_Manual.md # Detailed user documentation
+├── package.json           # Frontend dependencies
 ├── tailwind.config.js     # Tailwind configuration
-└── postcss.config.js      # PostCSS configuration
+├── postcss.config.js      # PostCSS configuration
+└── README.md              # This file
+```
+
+## 🔌 API Documentation
+
+The backend provides RESTful endpoints at `http://localhost:3001/api`:
+
+| Method | Endpoint | Description | Request Body |
+|--------|----------|-------------|--------------|
+| GET | `/api/bugs` | Retrieve all bugs | None |
+| POST | `/api/bugs` | Create a new bug | Bug object |
+| PUT | `/api/bugs/:id` | Update a specific bug | Updated fields |
+| DELETE | `/api/bugs/:id` | Delete a specific bug | None |
+| POST | `/api/bugs/bulk` | Create multiple bugs | { bugs: [...] } |
+
+### Example API Calls
+
+```javascript
+// Get all bugs
+fetch('http://localhost:3001/api/bugs')
+
+// Create a new bug
+fetch('http://localhost:3001/api/bugs', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    title: 'Bug title',
+    description: 'Bug description',
+    priority: 'high',
+    category: 'Driver',
+    status: 'new'
+  })
+})
 ```
 
 ## ⚙️ Configuration
@@ -174,29 +275,16 @@ bts/
 Edit the categories in `src/App.js`:
 
 ```javascript
-const CATEGORIES = [
-  'UI/UX',
-  'Backend',
-  'Database',
-  'API',
-  'Performance',
-  'Security',
-  'Other'
-];
+const categories = ['Driver', 'Multimedia', 'Kernel', 'Hardware', 'Audio', 'Video', 'Performance', 'Network', 'Security', 'Other'];
 ```
 
 ### Modifying Priority Levels
 
-Update priority options in `src/App.js`:
-
-```javascript
-const PRIORITIES = [
-  { value: 'low', label: 'Low', color: 'blue' },
-  { value: 'medium', label: 'Medium', color: 'yellow' },
-  { value: 'high', label: 'High', color: 'orange' },
-  { value: 'critical', label: 'Critical', color: 'red' }
-];
-```
+The priority levels are:
+- `low` (Blue)
+- `medium` (Yellow)
+- `high` (Orange)  
+- `critical` (Red)
 
 ### Styling Customization
 
@@ -206,60 +294,19 @@ Modify `tailwind.config.js` to customize:
 - Spacing
 - Breakpoints
 
-## 🔌 API Integration
+## 💾 Data Persistence
 
-### Connecting to Backend
+- Bug data is stored in `backend/bugs_database.json`
+- File is automatically created on first run
+- Data persists across server restarts
+- Survives browser cache clearing (unlike localStorage)
+- Regular backups recommended for production use
 
-To integrate with a backend API, modify `src/utils/api.js`:
+### Backup Strategy
 
-```javascript
-// Example API configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
-
-export const bugAPI = {
-  // Fetch all bugs
-  getAll: async () => {
-    const response = await fetch(`${API_BASE_URL}/bugs`);
-    return response.json();
-  },
-  
-  // Create new bug
-  create: async (bugData) => {
-    const response = await fetch(`${API_BASE_URL}/bugs`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bugData)
-    });
-    return response.json();
-  },
-  
-  // Update bug
-  update: async (id, bugData) => {
-    const response = await fetch(`${API_BASE_URL}/bugs/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bugData)
-    });
-    return response.json();
-  },
-  
-  // Delete bug
-  delete: async (id) => {
-    await fetch(`${API_BASE_URL}/bugs/${id}`, {
-      method: 'DELETE'
-    });
-  }
-};
-```
-
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-REACT_APP_API_URL=http://localhost:8000/api
-REACT_APP_ENABLE_AUTH=false
-REACT_APP_VERSION=1.0.0
+```bash
+# Create a backup
+cp backend/bugs_database.json backend/bugs_backup_$(date +%Y%m%d).json
 ```
 
 ## 🤝 Contributing
@@ -282,7 +329,15 @@ REACT_APP_VERSION=1.0.0
 
 ### Common Issues
 
-**1. npm start fails**
+**1. Backend Connection Failed**
+```bash
+# Ensure backend is running
+cd backend
+npm start
+# Check if port 3001 is available
+```
+
+**2. npm start fails**
 ```bash
 # Clear cache and reinstall
 rm -rf node_modules package-lock.json
@@ -290,29 +345,29 @@ npm install
 npm start
 ```
 
-**2. Tailwind styles not applying**
+**3. Tailwind styles not applying**
 ```bash
 # Rebuild Tailwind
 npm run build:css
-# or
-npx tailwindcss -i ./src/App.css -o ./dist/output.css --watch
+# or restart the development server
+npm start
 ```
 
-**3. Local storage not persisting**
-- Check browser settings for local storage
-- Ensure not in private/incognito mode
-- Clear browser cache and cookies
+**4. Data not persisting**
+- Check if `backend/bugs_database.json` exists
+- Ensure backend server is running
+- Verify write permissions in backend directory
 
-**4. Export function not working**
+**5. Export function not working**
 - Check browser permissions for downloads
 - Verify popup blockers are disabled
 - Try a different browser
 
 ### Debug Mode
 
-Enable debug mode by adding to `.env`:
-```env
-REACT_APP_DEBUG=true
+Check backend logs for errors:
+```bash
+# Backend terminal will show all API requests and errors
 ```
 
 ## 📱 Browser Support
@@ -325,13 +380,29 @@ REACT_APP_DEBUG=true
 
 ## 🔒 Security Considerations
 
-- All data is stored locally in the browser
-- No sensitive information should be stored in bug reports
+- No authentication implemented (suitable for internal use)
+- Data stored in plain JSON format
+- CORS enabled for local development
 - For production use, implement:
   - User authentication
   - Data encryption
   - API security headers
   - Input validation
+  - Rate limiting
+  - HTTPS
+
+## 🚦 Future Enhancements
+
+- [ ] User authentication and authorization
+- [ ] PostgreSQL/MongoDB integration
+- [ ] File attachments for bugs
+- [ ] Email notifications
+- [ ] Bug history and audit trail
+- [ ] Advanced reporting and analytics
+- [ ] REST API documentation (Swagger)
+- [ ] Automated testing suite
+- [ ] Docker containerization
+- [ ] Real-time updates with WebSockets
 
 ## 📄 License
 
@@ -350,7 +421,8 @@ For more information about the complete AI_Solution project, see the main [READM
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: May 2025  
-**Maintainer**: Shameer Mohammed
-**Contact**: mohammed.shameer@hotmail.com
+**Version**: 2.0.0  
+**Last Updated**: May 2024  
+**Maintainer**: Shameer Mohammed  
+**Contact**: mohammed.shameer@hotmail.com  
+**Status**: Production Ready with Persistent Backend Storage
