@@ -37,7 +37,7 @@ A powerful offline AI chatbot powered by Microsoft's Phi-3 model, featuring a mo
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/phi3-chatbot.git
+git clone https://github.com/askshameer/i-brow.git
 cd phi3-chatbot
 ```
 
