@@ -77,9 +77,9 @@ A modern, full-stack bug tracking portal built with React and Node.js, designed 
 
 2. **Install Backend Dependencies**
    ```bash
-   cd backend
+   cd src/backend
    npm install
-   cd ..
+   cd ../..
    ```
 
 3. **Install Frontend Dependencies**
@@ -93,7 +93,7 @@ The BTS requires both frontend and backend servers to be running:
 
 ### Terminal 1 - Backend Server (Port 3001)
 ```bash
-cd backend
+cd src/backend
 npm start
 ```
 
@@ -220,14 +220,14 @@ bts/
 ├── src/
 │   ├── components/         # React components
 │   │   └── BugGenerator.js # Test data generator
+│   ├── backend/            # Backend server
+│   │   ├── server.js       # Express server with API routes
+│   │   ├── package.json    # Backend dependencies
+│   │   ├── bugs_database.json # Persistent storage (auto-created)
+│   │   └── .gitignore      # Excludes node_modules and database
 │   ├── App.js             # Main app component with all logic
 │   ├── index.css          # Tailwind CSS imports
 │   └── index.js           # React entry point
-├── backend/
-│   ├── server.js          # Express server with API routes
-│   ├── package.json       # Backend dependencies
-│   ├── bugs_database.json # Persistent storage (auto-created)
-│   └── .gitignore         # Excludes node_modules and database
 ├── docs/
 │   └── BTS_User_Manual.md # Detailed user documentation
 ├── package.json           # Frontend dependencies
@@ -296,7 +296,7 @@ Modify `tailwind.config.js` to customize:
 
 ## 💾 Data Persistence
 
-- Bug data is stored in `backend/bugs_database.json`
+- Bug data is stored in `src/backend/bugs_database.json`
 - File is automatically created on first run
 - Data persists across server restarts
 - Survives browser cache clearing (unlike localStorage)
@@ -306,7 +306,7 @@ Modify `tailwind.config.js` to customize:
 
 ```bash
 # Create a backup
-cp backend/bugs_database.json backend/bugs_backup_$(date +%Y%m%d).json
+cp src/backend/bugs_database.json src/backend/bugs_backup_$(date +%Y%m%d).json
 ```
 
 ## 🤝 Contributing
@@ -332,7 +332,7 @@ cp backend/bugs_database.json backend/bugs_backup_$(date +%Y%m%d).json
 **1. Backend Connection Failed**
 ```bash
 # Ensure backend is running
-cd backend
+cd src/backend
 npm start
 # Check if port 3001 is available
 ```
@@ -354,9 +354,9 @@ npm start
 ```
 
 **4. Data not persisting**
-- Check if `backend/bugs_database.json` exists
+- Check if `src/backend/bugs_database.json` exists
 - Ensure backend server is running
-- Verify write permissions in backend directory
+- Verify write permissions in src/backend directory
 
 **5. Export function not working**
 - Check browser permissions for downloads

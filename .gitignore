@@ -153,6 +153,12 @@ ehthumbs_vista.db
 /bts/.env.test.local
 /bts/.env.production.local
 
+# BTS Backend specific (UPDATED PATH)
+/bts/src/backend/node_modules
+/bts/src/backend/bugs_database.json
+/bts/src/backend/*.log
+/bts/src/backend/.env
+
 # Tailwind CSS
 /bts/dist/
 
@@ -161,6 +167,7 @@ ehthumbs_vista.db
 # yarn.lock
 # /bts/package-lock.json
 # /bts/yarn.lock
+# /bts/src/backend/package-lock.json
 
 # Debug
 debug.log
