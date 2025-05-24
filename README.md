@@ -23,8 +23,8 @@ An offline chatbot implementation using Microsoft's Phi-3 model with LangChain f
 ### 1. Clone the repository (or create your project directory)
 
 ```bash
-mkdir phi3-chatbot
-cd phi3-chatbot
+mkdir phi3-chatbot-test
+cd phi3-chatbot-test
 ```
 
 ### 2. Create a virtual environment
