@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Plus, Download, AlertCircle, Edit2, Trash2, BarChart, Eye, RefreshCw } from 'lucide-react';
 import BugGenerator from './components/BugGenerator';
@@ -126,9 +125,11 @@ function App() {
 
   // Filter bugs
   const filteredBugs = bugs.filter(bug => {
-    const matchesSearch = bug.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         bug.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         bug.id.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!bug) return false;
+    const matchesSearch = 
+      ((bug.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (bug.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (bug.id || '').toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = filterStatus === 'all' || bug.status === filterStatus;
     const matchesPriority = filterPriority === 'all' || bug.priority === filterPriority;
     const matchesCategory = filterCategory === 'all' || bug.category === filterCategory;
@@ -422,7 +423,7 @@ function App() {
                     bug.priority === 'medium' ? 'text-yellow-600' :
                     'text-blue-600'
                   }`}>
-                    {bug.priority.charAt(0).toUpperCase() + bug.priority.slice(1)}
+                    {(bug.priority || 'unknown').charAt(0).toUpperCase() + (bug.priority || 'unknown').slice(1)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
@@ -533,7 +534,7 @@ function App() {
                     viewingBug.priority === 'medium' ? 'text-yellow-600' :
                     'text-blue-600'
                   }`}>
-                    {viewingBug.priority.charAt(0).toUpperCase() + viewingBug.priority.slice(1)}
+                    {(viewingBug.priority || 'unknown').charAt(0).toUpperCase() + (viewingBug.priority || 'unknown').slice(1)}
                   </p>
                 </div>
                 <div>

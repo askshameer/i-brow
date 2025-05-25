@@ -1,0 +1,59 @@
+
+name: Deploy BTS
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'bts/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    # Build frontend
+    - name: Install frontend dependencies
+      working-directory: ./bts
+      run: npm ci
+    
+    - name: Build frontend production
+      working-directory: ./bts
+      run: npm run build
+      env:
+        REACT_APP_API_URL: ${{ secrets.PRODUCTION_API_URL || 'http://localhost:3001/api' }}
+    
+    # Prepare backend
+    - name: Install backend dependencies
+      working-directory: ./bts/backend
+      run: npm ci --only=production
+    
+    # Deploy to hosting service (example using GitHub Pages for frontend)
+    - name: Deploy frontend to GitHub Pages
+      if: github.event_name == 'push'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./bts/build
+        destination_dir: bts
+    
+    # For backend, you'd typically deploy to a service like:
+    # - Heroku
+    # - AWS EC2/Lambda
+    # - DigitalOcean
+    # - Vercel
+    # - Railway
+    # Example for backend deployment notification
+    - name: Backend Deployment Note
+      run: |
+        echo "Backend needs to be deployed to a Node.js hosting service"
+        echo "Popular options: Heroku, Railway, Render, DigitalOcean App Platform"

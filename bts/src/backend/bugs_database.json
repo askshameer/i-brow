@@ -22,7 +22,7 @@
       "id": "BUG-DEMO-1748084066155-1",
       "title": "System freeze when switching audio output to AMD HDMI",
       "description": "**Environment:**\n- OS: Pop!_OS 22.04\n- Kernel: 5.19.0-50\n- Desktop: GNOME 44\n- Affected Package: amdgpu (6.5.0)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Behringer UMC22\n3. Play audio file using Kdenlive\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Discord or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-21\n- Reproducibility: Random\n- Workaround: Disable hardware acceleration",
-      "status": "new",
+      "status": "in-progress",
       "priority": "high",
       "category": "Multimedia",
       "assignedTo": "Charlie Wilson",
@@ -40,7 +40,7 @@
       "id": "BUG-DEMO-1748084066155-2",
       "title": "No sound output after system suspend/resume on Behringer UMC22",
       "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.2.0-35\n- Desktop: KDE Plasma 5.27\n- Affected Package: PulseAudio (1.2.3)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Razer Kiyo\n3. Play audio file using Audacity\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Chrome or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-04-28\n- Reproducibility: Random\n- Workaround: Switch to different codec",
-      "status": "new",
+      "status": "in-progress",
       "priority": "critical",
       "category": "Kernel",
       "assignedTo": "Jane Smith",
@@ -112,7 +112,7 @@
       "id": "BUG-DEMO-1748084066155-6",
       "title": "Audio device switching broken in KDE Plasma 5.27 environment",
       "description": "**Environment:**\n- OS: openSUSE Tumbleweed\n- Kernel: 6.2.0-35\n- Desktop: XFCE 4.18\n- Affected Package: ALSA (2.0.1)\n\n**Steps to Reproduce:**\n1. Open system audio settings\n2. Set output device to Realtek ALC892\n3. Play audio file using Discord\n4. Suspend system using power menu\n5. Resume system after 30 seconds\n\n**Expected Result:**\nAudio should resume playing normally after system wake\n\n**Actual Result:**\nNo audio output, must manually restart Blender or switch audio device\n\n**Additional Information:**\n- First noticed after system update on 2025-05-05\n- Reproducibility: Intermittent (70%)\n- Workaround: Use different application",
-      "status": "new",
+      "status": "resolved",
       "priority": "high",
       "category": "Audio",
       "assignedTo": "Frank Miller",
@@ -309,7 +309,7 @@
     {
       "id": "BUG-DEMO-1748084066155-17",
       "title": "Green screen in video calls with Focusrite Scarlett webcam",
-      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: PulseAudio (4.1.2)\n\n**Steps to Reproduce:**\n1. Boot system with NVIDIA RTX 3060 graphics\n2. Update driver to version 470.199.02\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Random\n- Workaround: Downgrade driver",
+      "description": "**Environment:**\n- OS: Debian 12\n- Kernel: 6.5.0-14\n- Desktop: Cinnamon 5.8\n- Affected Package: PulseAudio (4.1.2)\n\n**Steps to Reproduce:**\n1. Boot system with NVIDIA RTX 3060 graphics\n2. Update driver to version 470.199.02\n3. Reboot system\n4. Wait for display manager to load\n\n**Expected Result:**\nSystem boots to login screen normally\n\n**Actual Result:**\nBlack screen after GRUB, must boot with nomodeset parameter\n\n**Additional Information:**\n- First noticed after system update on 2025-04-27\n- Reproducibility: Random\n- Workaround: Downgrade driver\n\n**Log Path**\nfile://C:\\Users\\moham\\Downloads\\Linux_2k.log",
       "status": "new",
       "priority": "low",
       "category": "Driver",
@@ -322,7 +322,9 @@
       "tags": [
         "demo-data",
         "audio"
-      ]
+      ],
+      "resolutionNotes": "",
+      "fixedIn": ""
     },
     {
       "id": "BUG-DEMO-1748084066155-18",
@@ -899,6 +901,962 @@
         "demo-data",
         "driver"
       ]
+    },
+    {
+      "id": "BUG-1748155962566",
+      "createdAt": "2025-05-25T06:52:42.566Z",
+      "resolutionNotes": "",
+      "attachments": []
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Video",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252126-0"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "There is significant latency with external audio sources that impacts the overall media playback experience.",
+      "status": "open",
+      "priority": "low",
+      "category": "Security",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252126-1"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "open",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-2"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "open",
+      "priority": "critical",
+      "category": "Security",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252126-3"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "new",
+      "priority": "low",
+      "category": "Video",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252126-4"
+    },
+    {
+      "title": "Multimedia Player Freezes",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "open",
+      "priority": "low",
+      "category": "Kernel",
+      "assignedTo": "Dave",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-5"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "Users experience lag during video playback on various media players. The problem is most noticeable with high-definition videos.",
+      "status": "open",
+      "priority": "high",
+      "category": "Security",
+      "assignedTo": "Dave",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-6"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "in-progress",
+      "priority": "medium",
+      "category": "Audio",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-7"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "new",
+      "priority": "critical",
+      "category": "Performance",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252126-8"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Security",
+      "assignedTo": "Dave",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252126-9"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Multimedia",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252126-10"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Other",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-11"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Performance",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "Linux",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252126-12"
+    },
+    {
+      "title": "Multimedia Player Freezes",
+      "description": "Users experience lag during video playback on various media players. The problem is most noticeable with high-definition videos.",
+      "status": "open",
+      "priority": "medium",
+      "category": "Video",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "UI"
+      ],
+      "id": "BUG-1748159252126-13"
+    },
+    {
+      "title": "Latency Issues with External Audio",
+      "description": "Users experience lag during video playback on various media players. The problem is most noticeable with high-definition videos.",
+      "status": "in-progress",
+      "priority": "high",
+      "category": "Network",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252126-14"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "open",
+      "priority": "high",
+      "category": "Other",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "always",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252126-15"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "new",
+      "priority": "critical",
+      "category": "Driver",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-16"
+    },
+    {
+      "title": "Unresponsive GUI While Playing Videos",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Security",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252126-17"
+    },
+    {
+      "title": "Video Playback Lag in Linux",
+      "description": "Users experience lag during video playback on various media players. The problem is most noticeable with high-definition videos.",
+      "status": "open",
+      "priority": "high",
+      "category": "Multimedia",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252126-18"
+    },
+    {
+      "title": "Black Screen After Switching Resolutions",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Performance",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "major",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252126-19"
+    },
+    {
+      "title": "Kernel Panic on System Update",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "in-progress",
+      "priority": "medium",
+      "category": "Driver",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "Linux",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252126-20"
+    },
+    {
+      "title": "Multimedia Player Freezes",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "closed",
+      "priority": "low",
+      "category": "Security",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.126Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252126-21"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "new",
+      "priority": "medium",
+      "category": "Multimedia",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "UI"
+      ],
+      "id": "BUG-1748159252126-22"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "open",
+      "priority": "low",
+      "category": "Hardware",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "Linux",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252127-23"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "closed",
+      "priority": "low",
+      "category": "Hardware",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-24"
+    },
+    {
+      "title": "Black Screen After Switching Resolutions",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "in-progress",
+      "priority": "low",
+      "category": "Video",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252127-25"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Driver",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-26"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "new",
+      "priority": "medium",
+      "category": "Network",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-27"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "resolved",
+      "priority": "medium",
+      "category": "Kernel",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-28"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "There is significant latency with external audio sources that impacts the overall media playback experience.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Hardware",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-29"
+    },
+    {
+      "title": "Multimedia Player Freezes",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Performance",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "major",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252127-30"
+    },
+    {
+      "title": "Kernel Panic on System Update",
+      "description": "The multimedia player freezes when attempting to play certain formats. The player does not recover without restarting.",
+      "status": "open",
+      "priority": "critical",
+      "category": "Hardware",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-31"
+    },
+    {
+      "title": "Multimedia Player Freezes",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "open",
+      "priority": "low",
+      "category": "Audio",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "Windows",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-32"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "new",
+      "priority": "low",
+      "category": "Hardware",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252127-33"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "closed",
+      "priority": "critical",
+      "category": "Network",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-34"
+    },
+    {
+      "title": "USB Device Not Recognized",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "open",
+      "priority": "high",
+      "category": "Audio",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "rarely",
+      "platform": "Linux",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-35"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Other",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "feature"
+      ],
+      "id": "BUG-1748159252127-36"
+    },
+    {
+      "title": "Unresponsive GUI While Playing Videos",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "resolved",
+      "priority": "low",
+      "category": "Multimedia",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "minor",
+      "reproducibility": "rarely",
+      "platform": "Windows",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-37"
+    },
+    {
+      "title": "Network Driver Not Detected",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "new",
+      "priority": "critical",
+      "category": "Network",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "always",
+      "platform": "Linux",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252127-38"
+    },
+    {
+      "title": "Latency Issues with External Audio",
+      "description": "The audio driver crashes intermittently when the system boots. This issue affects the operating system performance and requires a fix on the boot sequence.",
+      "status": "in-progress",
+      "priority": "high",
+      "category": "Kernel",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-39"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "Overheating during video rendering tasks affects system performance and health, requiring an in-depth evaluation of the drivers used.",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Hardware",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "major",
+      "reproducibility": "always",
+      "platform": "Linux",
+      "tags": [
+        "enhancement"
+      ],
+      "id": "BUG-1748159252127-40"
+    },
+    {
+      "title": "Overheating During Video Rendering",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "closed",
+      "priority": "critical",
+      "category": "Performance",
+      "assignedTo": "Dave",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "major",
+      "reproducibility": "rarely",
+      "platform": "Windows",
+      "tags": [
+        "UI"
+      ],
+      "id": "BUG-1748159252127-41"
+    },
+    {
+      "title": "Kernel Panic on System Update",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "resolved",
+      "priority": "high",
+      "category": "Security",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "minor",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252127-42"
+    },
+    {
+      "title": "Unresponsive GUI While Playing Videos",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "closed",
+      "priority": "critical",
+      "category": "Video",
+      "assignedTo": "Bob",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "always",
+      "platform": "Windows",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-43"
+    },
+    {
+      "title": "Unresponsive GUI While Playing Videos",
+      "description": "USB devices are not recognized by the system, impacting user operations and functionality.",
+      "status": "new",
+      "priority": "high",
+      "category": "Hardware",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252127-44"
+    },
+    {
+      "title": "Black Screen After Switching Resolutions",
+      "description": "The GUI becomes unresponsive when playing videos in fullscreen mode, requiring users to kill the player process to return to normal operations.",
+      "status": "in-progress",
+      "priority": "critical",
+      "category": "Security",
+      "assignedTo": "Alice",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252127-45"
+    },
+    {
+      "title": "Audio Driver Crash on Boot",
+      "description": "Switching screen resolutions leads to a black screen issue in certain display configurations, necessitating a forceful reset.",
+      "status": "resolved",
+      "priority": "medium",
+      "category": "Audio",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": "",
+      "fixedIn": "",
+      "severity": "major",
+      "reproducibility": "sometimes",
+      "platform": "Linux",
+      "tags": [
+        "bug"
+      ],
+      "id": "BUG-1748159252127-46"
+    },
+    {
+      "title": "Latency Issues with External Audio",
+      "description": "The network driver fails to detect specific network interfaces, which results in no internet connection available despite the driver being installed.",
+      "status": "closed",
+      "priority": "medium",
+      "category": "Hardware",
+      "assignedTo": "",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "rarely",
+      "platform": "Windows",
+      "tags": [
+        "UI"
+      ],
+      "id": "BUG-1748159252127-47"
+    },
+    {
+      "title": "Kernel Panic on System Update",
+      "description": "There is significant latency with external audio sources that impacts the overall media playback experience.",
+      "status": "in-progress",
+      "priority": "critical",
+      "category": "Kernel",
+      "assignedTo": "Eve",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "minor",
+      "reproducibility": "rarely",
+      "platform": "macOS",
+      "tags": [
+        "UX"
+      ],
+      "id": "BUG-1748159252127-48"
+    },
+    {
+      "title": "Video Playback Lag in Linux",
+      "description": "There is significant latency with external audio sources that impacts the overall media playback experience.",
+      "status": "closed",
+      "priority": "critical",
+      "category": "Other",
+      "assignedTo": "Charlie",
+      "releaseVersion": "",
+      "createdAt": "2025-05-25T07:47:32.127Z",
+      "resolutionNotes": null,
+      "fixedIn": null,
+      "severity": "critical",
+      "reproducibility": "sometimes",
+      "platform": "macOS",
+      "tags": [
+        "performance"
+      ],
+      "id": "BUG-1748159252127-49"
     }
   ]
 }

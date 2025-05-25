@@ -1,0 +1,63 @@
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    # Install and test frontend
+    - name: Install frontend dependencies
+      working-directory: ./bts
+      run: npm ci
+    
+    - name: Build frontend
+      working-directory: ./bts
+      run: npm run build --if-present
+    
+    - name: Test frontend
+      working-directory: ./bts
+      run: npm test:ci --if-present
+    
+    # Install and test backend (CORRECTED PATH)
+    - name: Install backend dependencies
+      working-directory: ./bts/src/backend
+      run: npm ci
+    
+    - name: Test backend
+      working-directory: ./bts/src/backend
+      run: npm test --if-present
+    
+    # Optional: Run integration tests
+    - name: Start backend server
+      working-directory: ./bts/src/backend
+      run: |
+        npm start &
+        sleep 5  # Give server time to start
+      
+    - name: Check backend health
+      run: |
+        curl -f http://localhost:3001/api/bugs || exit 1
+        
+    - name: Stop backend server
+      if: always()
+      run: |
+        pkill -f "node server.js" || true

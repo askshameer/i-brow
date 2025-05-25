@@ -1,0 +1,27 @@
+
+name: Backup Database
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Create backup
+      run: |
+        DATE=$(date +%Y%m%d_%H%M%S)
+        mkdir -p backups
+        echo "Backup created at $DATE" > backups/backup_$DATE.json
+        
+    - name: Upload backup artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: database-backup-${{ github.run_number }}
+        path: backups/
+        retention-days: 30
