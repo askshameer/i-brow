@@ -1,0 +1,55 @@
+# Simple GitHub Pages deployment using peaceiris/actions-gh-pages
+name: Deploy Static Site
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# Important: Set proper permissions for GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+        cache-dependency-path: bts/package-lock.json
+    
+    - name: Install dependencies
+      working-directory: ./bts
+      run: |
+        npm ci --prefer-offline --no-audit
+    
+    - name: Build application
+      working-directory: ./bts
+      run: |
+        npm run build
+      env:
+        PUBLIC_URL: /i-brow
+        REACT_APP_API_URL: https://askshameer.github.io/i-brow/api
+        CI: false
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        personal_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        publish_dir: ./bts/build
+        publish_branch: gh-pages
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: 'Deploy Bug Repro Engine v3.2.0 to GitHub Pages'
