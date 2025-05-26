@@ -160,7 +160,7 @@ python app.py
 - [Full Documentation](README.md)
 - [API Reference](API_DOCUMENTATION.md)
 - [Contributing Guide](CONTRIBUTING.md)
-- [Report Issues](https://github.com/yourusername/phi3-chatbot/issues)
+- [Report Issues](https://github.com/askshameer/i-brow/issues)
 
 ---
 
