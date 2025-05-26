@@ -155,7 +155,9 @@ ehthumbs_vista.db
 
 # BTS Backend specific (UPDATED PATH)
 /bts/src/backend/node_modules
-/bts/src/backend/bugs_database.json
+# Keep demo bugs database but ignore production data
+# /bts/src/backend/bugs_database.json
+/bts/src/backend/bugs_database_production.json
 /bts/src/backend/*.log
 /bts/src/backend/.env
 

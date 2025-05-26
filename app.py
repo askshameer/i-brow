@@ -576,6 +576,47 @@ def status():
         'model': 'Phi-3-mini-4k-instruct'
     })
 
+@app.route('/bts/bugs', methods=['GET'])
+def get_bugs():
+    """Proxy endpoint to fetch bugs from BTS backend"""
+    import requests
+    try:
+        # Make request to BTS backend
+        response = requests.get('http://localhost:3001/api/bugs', timeout=10)
+        if response.status_code == 200:
+            return jsonify(response.json())
+        else:
+            return jsonify({'error': f'BTS API returned status {response.status_code}'}), response.status_code
+    except requests.exceptions.ConnectionError:
+        return jsonify({'error': 'Cannot connect to BTS backend. Make sure it is running on port 3001.'}), 503
+    except requests.exceptions.Timeout:
+        return jsonify({'error': 'BTS backend request timed out.'}), 504
+    except Exception as e:
+        return jsonify({'error': f'Error connecting to BTS: {str(e)}'}), 500
+
+@app.route('/bts/bugs/<bug_id>', methods=['GET'])
+def get_bug(bug_id):
+    """Proxy endpoint to fetch a specific bug from BTS backend"""
+    import requests
+    try:
+        # Get all bugs and find the specific one
+        response = requests.get('http://localhost:3001/api/bugs', timeout=10)
+        if response.status_code == 200:
+            bugs = response.json()
+            bug = next((b for b in bugs if b['id'] == bug_id), None)
+            if bug:
+                return jsonify(bug)
+            else:
+                return jsonify({'error': f'Bug with ID {bug_id} not found'}), 404
+        else:
+            return jsonify({'error': f'BTS API returned status {response.status_code}'}), response.status_code
+    except requests.exceptions.ConnectionError:
+        return jsonify({'error': 'Cannot connect to BTS backend. Make sure it is running on port 3001.'}), 503
+    except requests.exceptions.Timeout:
+        return jsonify({'error': 'BTS backend request timed out.'}), 504
+    except Exception as e:
+        return jsonify({'error': f'Error connecting to BTS: {str(e)}'}), 500
+
 if __name__ == '__main__':
     print("Initializing Phi-3 Web Chatbot with Log Analysis...")
     print("="*50)

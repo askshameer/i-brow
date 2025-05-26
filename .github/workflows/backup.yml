@@ -11,16 +11,23 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
-    - name: Create backup
+    - name: Create BTS database backup
       run: |
         DATE=$(date +%Y%m%d_%H%M%S)
         mkdir -p backups
-        echo "Backup created at $DATE" > backups/backup_$DATE.json
+        # Copy the actual BTS database
+        if [ -f "bts/src/backend/bugs_database.json" ]; then
+          cp bts/src/backend/bugs_database.json backups/bugs_database_backup_$DATE.json
+          echo "BTS database backup created at $DATE"
+        else
+          echo "BTS database not found, creating placeholder backup"
+          echo "{\"backup_date\": \"$DATE\", \"status\": \"no_database_found\"}" > backups/backup_$DATE.json
+        fi
         
     - name: Upload backup artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: database-backup-${{ github.run_number }}
         path: backups/

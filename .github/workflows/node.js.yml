@@ -32,9 +32,9 @@ jobs:
         cache: 'npm'
         cache-dependency-path: |
           bts/package-lock.json
-          bts/src/backend/package-lock.json
-    
-    # Install and test frontend    - name: Install frontend dependencies
+          bts/src/backend/package-lock.json    
+    # Install and test frontend
+    - name: Install frontend dependencies
       working-directory: ./bts
       run: npm ci
     
@@ -43,19 +43,19 @@ jobs:
       run: npm run build --if-present
       env:
         CI: false # Treat warnings as warnings, not errors
-    
-    - name: Test frontend
+      - name: Test frontend
       working-directory: ./bts
       run: npm run test:ci --if-present
-      # Install and test backend
+      
+    # Install and test backend
     - name: Install backend dependencies
       working-directory: ./bts/src/backend
       run: npm ci
-    
-    - name: Test backend
+      - name: Test backend
       working-directory: ./bts/src/backend
       run: npm test --if-present
-      # Optional: Run integration tests
+      
+    # Optional: Run integration tests
     - name: Start backend server (background)
       working-directory: ./bts/src/backend
       run: |

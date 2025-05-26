@@ -113,7 +113,7 @@
             color: #e0e0e0;
             border-bottom-left-radius: 4px;
             position: relative;
-        }.message-time {
+        }        .message-time {
             font-size: 0.75rem;
             color: #666;
             margin-top: 0.25rem;
@@ -126,6 +126,14 @@
 
         .message.assistant .message-time {
             text-align: left;
+        }        /* Fix for bug information display width */
+        .message.assistant:has(.bug-info-display) .message-content {
+            max-width: 85%;
+        }
+        
+        /* Fallback for browsers that don't support :has() */
+        .message.assistant.bug-message .message-content {
+            max-width: 85%;
         }
 
         .file-attachment {
@@ -358,6 +366,189 @@
             text-align: center;
             color: #4a9eff;
             font-size: 0.875rem;
+        }        .bug-lookup-container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .bug-lookup-container.show {
+            display: block;
+        }
+
+        .bug-lookup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #4a9eff;
+            font-weight: 600;
+        }
+
+        .bug-lookup-input-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        #bugIdInput {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #bugIdInput:focus {
+            border-color: #4a9eff;
+        }
+
+        #bugIdInput::placeholder {
+            color: #666;
+        }
+
+        .lookup-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        .lookup-button:hover {
+            background-color: #357abd;
+        }
+
+        .lookup-button:disabled {
+            background-color: #333;
+            cursor: not-allowed;
+        }        .bug-info-display {
+            background-color: #1e2936;
+            border: 1px solid #2a4158;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }.bug-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .bug-title {
+            font-weight: 600;
+            color: #4a9eff;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .bug-id {
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .bug-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .bug-status.new {
+            background-color: #1e3a3a;
+            color: #4ade80;
+        }
+
+        .bug-status.in-progress {
+            background-color: #3a2e1e;
+            color: #fbbf24;
+        }
+
+        .bug-status.resolved {
+            background-color: #1e2e3a;
+            color: #60a5fa;
+        }
+
+        .bug-status.closed {
+            background-color: #2a1e2a;
+            color: #a78bfa;
+        }        .bug-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            border-radius: 6px;
+        }
+
+        .bug-meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bug-meta-label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .bug-meta-value {
+            color: #e0e0e0;
+            font-size: 0.875rem;
+        }        .bug-description {
+            background-color: #1a1a1a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            max-height: none;
+            overflow: visible;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bug-description p {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .bug-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bug-description strong {
+            color: #4a9eff;
+            font-weight: 600;
+        }
+
+        .bug-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .bug-tag {
+            padding: 0.25rem 0.5rem;
+            background-color: #2a2a2a;
+            color: #4a9eff;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            border: 1px solid #333;
         }
 
         .loading {
@@ -433,11 +624,26 @@
         .analysis-content {
             color: #e0e0e0;
             line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
+        }        @media (max-width: 768px) {
             .message-content {
                 max-width: 85%;
+            }
+            
+            .message.assistant:has(.bug-info-display) .message-content,
+            .message.assistant.bug-message .message-content {
+                max-width: 92%;
+            }
+            
+            .bug-meta {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+            
+            .bug-info-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
             }
             
             .controls {
@@ -464,7 +670,26 @@
             <div class="upload-text">Drag and drop log files here or</div>
             <button class="browse-button" onclick="document.getElementById('fileInput').click()">Browse Files</button>
             <input type="file" id="fileInput" style="display: none;" accept=".txt,.log,.dmp,.dump,.err,.out,.crash,.trace" onchange="handleFileSelect(event)">
-        </div>        <div class="chat-container" id="chatContainer">
+        </div>
+
+        <div class="bug-lookup-container" id="bugLookupContainer">
+            <div class="bug-lookup-header">
+                🐛 Bug Lookup
+            </div>
+            <div class="bug-lookup-input-container">
+                <input 
+                    type="text" 
+                    id="bugIdInput" 
+                    placeholder="Enter Bug ID (e.g., BUG-DEMO-1748084066155-0)"
+                    onkeypress="handleBugLookupKeyPress(event)"
+                >
+                <button class="lookup-button" onclick="lookupBug()" id="lookupButton">
+                    Lookup
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
             <div class="message assistant">
                 <div class="message-content">Hello! I'm your Phi-3 assistant. I can help you analyze error logs and crash dumps. You can drag and drop log files or click the attachment button to upload them.</div>
                 <div class="message-time">Just now</div>
@@ -478,10 +703,9 @@
                 <span></span>
                 <span></span>
             </div>
-        </div>
-
-        <div class="controls">
+        </div>        <div class="controls">
             <button class="control-btn" onclick="clearChat()">Clear Chat</button>
+            <button class="control-btn" onclick="toggleBugLookup()">Bug Lookup</button>
             <button class="control-btn" onclick="toggleSettings()">Settings</button>
             <button class="control-btn" onclick="downloadHistory()">Download History</button>
         </div>
@@ -546,9 +770,111 @@
         </div>
     </div>
 
-    <script>
-        let isProcessing = false;
+    <script>        let isProcessing = false;
         let uploadedFiles = [];
+        let currentBugData = null;        // BTS Configuration
+        const BTS_API_URL = '/bts';
+
+        // Bug Lookup Functions
+        function toggleBugLookup() {
+            const container = document.getElementById('bugLookupContainer');
+            container.classList.toggle('show');
+            if (container.classList.contains('show')) {
+                document.getElementById('bugIdInput').focus();
+            }
+        }
+
+        function handleBugLookupKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                lookupBug();
+            }
+        }
+
+        async function lookupBug() {
+            const input = document.getElementById('bugIdInput');
+            const bugId = input.value.trim();
+            
+            if (!bugId) {
+                addMessage('Please enter a bug ID.', 'assistant');
+                return;
+            }
+            
+            const lookupButton = document.getElementById('lookupButton');
+            lookupButton.disabled = true;
+            lookupButton.textContent = 'Looking up...';
+            
+            try {
+                // First try to get all bugs and find the specific one
+                const response = await fetch(`${BTS_API_URL}/bugs`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const bugs = await response.json();
+                const bug = bugs.find(b => b.id === bugId);
+                
+                if (bug) {
+                    currentBugData = bug;
+                    displayBugInfo(bug);
+                    addBugToChat(bug);
+                } else {
+                    addMessage(`Bug with ID "${bugId}" not found. Please check the ID and try again.`, 'assistant');
+                }
+            } catch (error) {
+                console.error('Error fetching bug:', error);
+                addMessage(`Error looking up bug: ${error.message}. Make sure the BTS backend is running on port 3001.`, 'assistant');
+            } finally {
+                lookupButton.disabled = false;
+                lookupButton.textContent = 'Lookup';
+                input.value = '';
+            }
+        }
+
+        function displayBugInfo(bug) {
+            // This function could be used to show bug info in a dedicated panel if needed
+            console.log('Bug data:', bug);
+        }        function addBugToChat(bug) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message assistant bug-message';
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            const tagsHtml = bug.tags && bug.tags.length > 0 
+                ? `<div class="bug-tags">${bug.tags.map(tag => `<span class="bug-tag">${escapeHtml(tag)}</span>`).join('')}</div>`
+                : '';
+              messageDiv.innerHTML = `<div class="message-content"><div class="bug-info-display"><div class="bug-info-header"><div><div class="bug-title">${escapeHtml(bug.title)}</div><div class="bug-id">${escapeHtml(bug.id)}</div></div><div class="bug-status ${bug.status}">${escapeHtml(bug.status)}</div></div><div class="bug-meta"><div class="bug-meta-item"><div class="bug-meta-label">Priority</div><div class="bug-meta-value">${escapeHtml(bug.priority || 'N/A')}</div></div><div class="bug-meta-item"><div class="bug-meta-label">Category</div><div class="bug-meta-value">${escapeHtml(bug.category || 'N/A')}</div></div><div class="bug-meta-item"><div class="bug-meta-label">Assigned To</div><div class="bug-meta-value">${escapeHtml(bug.assignedTo || 'Unassigned')}</div></div><div class="bug-meta-item"><div class="bug-meta-label">Severity</div><div class="bug-meta-value">${escapeHtml(bug.severity || 'N/A')}</div></div><div class="bug-meta-item"><div class="bug-meta-label">Platform</div><div class="bug-meta-value">${escapeHtml(bug.platform || 'N/A')}</div></div><div class="bug-meta-item"><div class="bug-meta-label">Created</div><div class="bug-meta-value">${formatDate(bug.createdAt)}</div></div></div><div class="bug-description">${cleanDescription(bug.description)}</div>${tagsHtml}</div></div><div class="message-time">${time}</div>`;
+            
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Hide the bug lookup container after successful lookup
+            document.getElementById('bugLookupContainer').classList.remove('show');
+        }        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch (error) {
+                return 'Invalid date';
+            }
+        }        function cleanDescription(description) {
+            if (!description) return 'No description available.';
+            
+            // First escape any existing HTML to prevent XSS
+            const escaped = escapeHtml(description);
+            
+            // Then apply our safe formatting
+            return escaped
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Convert bold markdown to HTML
+                .replace(/\n\n+/g, '</p><p>') // Convert double line breaks to paragraphs
+                .replace(/\n/g, '<br>') // Convert single line breaks to <br> tags
+                .replace(/^/, '<p>') // Add opening paragraph tag
+                .replace(/$/, '</p>') // Add closing paragraph tag
+                .replace(/<p><\/p>/g, '') // Remove empty paragraphs
+                .trim();
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
