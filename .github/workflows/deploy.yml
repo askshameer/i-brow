@@ -13,29 +13,41 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18.x'
         cache: 'npm'
+        cache-dependency-path: |
+          bts/package-lock.json
+          bts/src/backend/package-lock.json
     
     # Build frontend
     - name: Install frontend dependencies
       working-directory: ./bts
       run: npm ci
     
+    - name: Run frontend tests
+      working-directory: ./bts
+      run: npm run test:ci
+    
     - name: Build frontend production
       working-directory: ./bts
       run: npm run build
       env:
         REACT_APP_API_URL: ${{ secrets.PRODUCTION_API_URL || 'http://localhost:3001/api' }}
+        CI: false # Treats warnings as warnings, not errors
     
     # Prepare backend
     - name: Install backend dependencies
-      working-directory: ./bts/backend
+      working-directory: ./bts/src/backend
       run: npm ci --only=production
+    
+    - name: Run backend tests
+      working-directory: ./bts/src/backend
+      run: npm test
     
     # Deploy to hosting service (example using GitHub Pages for frontend)
     - name: Deploy frontend to GitHub Pages
@@ -57,3 +69,4 @@ jobs:
       run: |
         echo "Backend needs to be deployed to a Node.js hosting service"
         echo "Popular options: Heroku, Railway, Render, DigitalOcean App Platform"
+        echo "Backend files are ready in ./bts/src/backend/"

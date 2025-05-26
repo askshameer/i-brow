@@ -71,12 +71,12 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-        }
-
-        .message {
+        }        .message {
             display: flex;
             gap: 0.5rem;
             animation: fadeIn 0.3s ease-in;
+            margin-bottom: 0.5rem;
+            width: 100%;
         }
 
         @keyframes fadeIn {
@@ -88,31 +88,44 @@
             justify-content: flex-end;
         }
 
+        .message.bot {
+            justify-content: flex-start;
+        }
+
         .message-content {
             max-width: 70%;
             padding: 0.75rem 1rem;
-            border-radius: 10px;
+            border-radius: 15px;
             word-wrap: break-word;
             white-space: pre-wrap;
             line-height: 1.5;
-        }
-
-        .message.user .message-content {
+            position: relative;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }        .message.user .message-content {
             background-color: #4a9eff;
             color: white;
             border-bottom-right-radius: 4px;
+            position: relative;
         }
 
         .message.assistant .message-content {
             background-color: #2a2a2a;
             color: #e0e0e0;
             border-bottom-left-radius: 4px;
-        }
-
-        .message-time {
+            position: relative;
+        }.message-time {
             font-size: 0.75rem;
             color: #666;
             margin-top: 0.25rem;
+            text-align: right;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        .message.assistant .message-time {
+            text-align: left;
         }
 
         .file-attachment {
@@ -451,14 +464,10 @@
             <div class="upload-text">Drag and drop log files here or</div>
             <button class="browse-button" onclick="document.getElementById('fileInput').click()">Browse Files</button>
             <input type="file" id="fileInput" style="display: none;" accept=".txt,.log,.dmp,.dump,.err,.out,.crash,.trace" onchange="handleFileSelect(event)">
-        </div>
-
-        <div class="chat-container" id="chatContainer">
+        </div>        <div class="chat-container" id="chatContainer">
             <div class="message assistant">
-                <div>
-                    <div class="message-content">Hello! I'm your Phi-3 assistant. I can help you analyze error logs and crash dumps. You can drag and drop log files or click the attachment button to upload them.</div>
-                    <div class="message-time">Just now</div>
-                </div>
+                <div class="message-content">Hello! I'm your Phi-3 assistant. I can help you analyze error logs and crash dumps. You can drag and drop log files or click the attachment button to upload them.</div>
+                <div class="message-time">Just now</div>
             </div>
         </div>
 
@@ -597,9 +606,7 @@
                 document.getElementById('loadingIndicator').classList.remove('show');
                 input.focus();
             }
-        }
-
-        function addMessage(text, sender, fileInfo = null) {
+        }        function addMessage(text, sender, fileInfo = null) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
@@ -607,36 +614,30 @@
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
             let messageContent = `
-                <div>
-                    <div class="message-content">${escapeHtml(text)}</div>
+                <div class="message-content">${escapeHtml(text)}</div>
             `;
             
             if (fileInfo) {
                 messageContent += `
-                    <div class="file-attachment">
-                        <div class="file-icon">📄</div>
-                        <div class="file-info">
-                            <div class="file-name">${fileInfo.filename}</div>
-                            <div class="file-size">${formatFileSize(fileInfo.size)}</div>
-                        </div>
-                        <button class="analyze-button" onclick="analyzeFile('${fileInfo.id}')" id="analyze-${fileInfo.id}">
-                            Analyze
-                        </button>
+                <div class="file-attachment">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                        <div class="file-name">${fileInfo.filename}</div>
+                        <div class="file-size">${formatFileSize(fileInfo.size)}</div>
                     </div>
+                    <button class="analyze-button" onclick="analyzeFile('${fileInfo.id}')" id="analyze-${fileInfo.id}">
+                        Analyze
+                    </button>
+                </div>
                 `;
             }
             
-            messageContent += `
-                    <div class="message-time">${time}</div>
-                </div>
-            `;
+            messageContent += `<div class="message-time">${time}</div>`;
             
             messageDiv.innerHTML = messageContent;
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function addAnalysisResult(analysis, findings) {
+        }        function addAnalysisResult(analysis, findings) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message assistant';
@@ -644,17 +645,15 @@
             const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
             messageDiv.innerHTML = `
-                <div>
-                    <div class="message-content">
-                        <div class="analysis-result">
-                            <div class="analysis-header">
-                                🔍 Log Analysis Results
-                            </div>
-                            <div class="analysis-content">${escapeHtml(analysis)}</div>
+                <div class="message-content">
+                    <div class="analysis-result">
+                        <div class="analysis-header">
+                            🔍 Log Analysis Results
                         </div>
+                        <div class="analysis-content">${escapeHtml(analysis)}</div>
                     </div>
-                    <div class="message-time">${time}</div>
                 </div>
+                <div class="message-time">${time}</div>
             `;
             
             chatContainer.appendChild(messageDiv);
@@ -776,15 +775,12 @@
             if (confirm('Are you sure you want to clear the conversation?')) {
                 try {
                     await fetch('/clear', { method: 'POST' });
-                    
-                    // Clear chat display
+                      // Clear chat display
                     const chatContainer = document.getElementById('chatContainer');
                     chatContainer.innerHTML = `
                         <div class="message assistant">
-                            <div>
-                                <div class="message-content">Conversation cleared. How can I help you today?</div>
-                                <div class="message-time">Just now</div>
-                            </div>
+                            <div class="message-content">Conversation cleared. How can I help you today?</div>
+                            <div class="message-time">Just now</div>
                         </div>
                     `;
                     
