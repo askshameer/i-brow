@@ -1,0 +1,92 @@
+# Git and version control
+.git
+.gitignore
+.github
+
+# Documentation
+README.md
+CHANGELOG.md
+*.md
+documentations/
+
+# Python virtual environment
+phi3_env/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# Model cache (will be downloaded during build)
+models/
+
+# Temporary uploads (will be created in container)
+uploads/*.log
+
+# Development tools
+.pytest_cache/
+.coverage
+.nyc_output
+coverage/
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Development scripts
+setup_webapp.md
+set_cuda_env.ps1
+
+# Test files
+test_*.py
