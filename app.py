@@ -521,8 +521,7 @@ def analyze_file(file_id):
         # Read file content
         with open(file_info['filepath'], 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
-        
-        # Analyze the log file
+          # Analyze the log file
         analysis_result = chatbot.analyze_log_file(content, file_info['filename'])
         
         return jsonify({
@@ -531,10 +530,73 @@ def analyze_file(file_id):
             'findings': analysis_result['raw_findings'],
             'filename': file_info['filename']
         })
-    
     except Exception as e:
         print(f"Error in analyze endpoint: {str(e)}")
         return jsonify({'error': f'Error analyzing file: {str(e)}'}), 500
+
+@app.route('/fetch-log', methods=['POST'])
+def fetch_log():
+    try:
+        data = request.get_json()
+        file_path = data.get('path')
+        filename = data.get('filename')
+        
+        if not file_path or not filename:
+            return jsonify({'error': 'Missing file path or filename'}), 400
+        
+        # Security check - only allow reading log files
+        if not any(file_path.lower().endswith(ext) for ext in ['.log', '.txt', '.err', '.out', '.crash', '.trace', '.dmp', '.dump']):
+            return jsonify({'error': 'Invalid file type'}), 400
+        
+        # Check if file exists and is readable
+        if not os.path.exists(file_path):
+            return jsonify({'error': f'File not found: {file_path}'}), 404
+        
+        if not os.path.isfile(file_path):
+            return jsonify({'error': f'Path is not a file: {file_path}'}), 400
+        
+        # Read the file
+        try:
+            with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+        except PermissionError:
+            return jsonify({'error': f'Permission denied reading file: {file_path}'}), 403
+        except Exception as e:
+            return jsonify({'error': f'Error reading file: {str(e)}'}), 500
+        
+        # Create a file entry similar to uploaded files
+        file_id = hashlib.md5(f"{file_path}{datetime.now().isoformat()}".encode()).hexdigest()
+        
+        # Save to uploads folder for analysis
+        safe_filename = secure_filename(filename)
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{safe_filename}")
+        
+        with open(upload_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        
+        file_info = {
+            'id': file_id,
+            'filename': filename,
+            'filepath': upload_path,
+            'size': len(content.encode('utf-8')),
+            'source': 'auto-fetched',
+            'original_path': file_path
+        }
+        
+        # Add to session
+        if 'uploaded_files' not in session:
+            session['uploaded_files'] = []
+        session['uploaded_files'].append(file_info)
+        
+        return jsonify({
+            'status': 'success',
+            'message': f'Successfully fetched log file from {file_path}',
+            'file': file_info
+        })
+        
+    except Exception as e:
+        print(f"Error in fetch-log endpoint: {str(e)}")
+        return jsonify({'error': f'Error fetching log file: {str(e)}'}), 500
 
 @app.route('/clear', methods=['POST'])
 def clear():

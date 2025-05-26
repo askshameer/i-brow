@@ -16,6 +16,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.3.0] - 2025-05-26
+
+### ✨ Added
+- **Enhanced Progress Indicators**: Real-time analysis progress with animated visual feedback
+- **Interactive Bug Actions**: Contextual action buttons for "Guide Me", "Analyze Log", and "Repro Scenario"
+- **Visual State Management**: Animated shimmer effects, rotating progress icons, and completion states
+- **Enhanced User Interface**: Updated title to "Bug Repro Engine with Assisted Debugging"
+- **Contextual Bug Analysis**: Intelligent analysis tied to specific bug records and contexts
+- **Auto-Fetch Integration**: Seamless integration with BTS for automatic log file retrieval
+- **Progress Animation System**: CSS animations for analysis states (active, complete, error)
+
+### 🎨 UI/UX Improvements
+- **Loading Messages**: Changed from "Phi-3 is thinking" to "Processing Request"
+- **Progress Styling**: Added gradient backgrounds, pulsing borders, and rotating icons
+- **Completion States**: Visual feedback when analysis completes with green success styling
+- **Enhanced Messaging**: Dynamic message updates with state-aware animations
+- **Mobile Optimization**: Improved responsive design for progress indicators
+
+### 🔧 Technical Enhancements
+- **Message System Refactor**: Enhanced `addMessage()` and `updateMessage()` functions
+- **CSS Animation Framework**: Comprehensive keyframe animations for progress states
+- **State Management**: Improved animation state handling for seamless transitions
+- **Function Enhancement**: Updated `analyzeFile()` and `analyzeFileForBug()` with progress tracking
+
+### 📈 Performance
+- **Animation Optimization**: Smooth transitions without performance impact
+- **Memory Efficiency**: Better handling of dynamic content updates
+- **Visual Feedback**: Immediate user feedback for all operations
+
+---
+
 ## [1.2.0] - 2024-01-15
 
 ### ✨ Added

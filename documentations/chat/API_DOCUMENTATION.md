@@ -127,7 +127,144 @@ POST /analyze/{file_id}
 
 ---
 
-### Session Management
+### Bug Tracking System (BTS) Integration
+
+#### Get All Bugs
+```http
+GET /bts/bugs
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "id": "BUG-DEMO-1748084066155-17",
+      "title": "Application crashes with segmentation fault",
+      "description": "The application crashes unexpectedly...",
+      "status": "open",
+      "priority": "high",
+      "category": "crash",
+      "assignedTo": "dev-team",
+      "severity": "critical",
+      "platform": "Linux",
+      "createdAt": "2025-01-15T10:30:00Z",
+      "logPath": "C:\\Users\\moham\\Downloads\\Linux_2k.log",
+      "tags": ["crash", "segfault", "memory"]
+    }
+  ]
+}
+```
+
+---
+
+#### Get Specific Bug
+```http
+GET /bts/bugs/{bug_id}
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "data": {
+    "id": "BUG-DEMO-1748084066155-17",
+    "title": "Application crashes with segmentation fault",
+    "description": "The application crashes unexpectedly...",
+    "status": "open",
+    "priority": "high",
+    "category": "crash",
+    "assignedTo": "dev-team",
+    "severity": "critical",
+    "platform": "Linux",
+    "createdAt": "2025-01-15T10:30:00Z",
+    "logPath": "C:\\Users\\moham\\Downloads\\Linux_2k.log",
+    "tags": ["crash", "segfault", "memory"]
+  }
+}
+```
+
+---
+
+#### Auto-Fetch Log File
+```http
+POST /fetch-log
+Content-Type: application/json
+
+{
+  "logPath": "C:\\Users\\moham\\Downloads\\Linux_2k.log"
+}
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "file": {
+    "id": "auto_fetched_123",
+    "filename": "Linux_2k.log",
+    "filepath": "/uploads/20250526_auto_Linux_2k.log",
+    "size": 204800,
+    "timestamp": "2025-05-26T12:00:00.000Z",
+    "source": "auto-fetch"
+  }
+}
+```
+
+**Status Codes:**
+- `200`: Log fetched successfully
+- `400`: Invalid log path
+- `404`: Log file not found
+- `500`: Server error
+
+---
+
+#### Analyze File for Bug Context
+```http
+POST /analyze-bug/{file_id}
+Content-Type: application/json
+
+{
+  "bugId": "BUG-DEMO-1748084066155-17",
+  "context": "Analyzing crash logs for segmentation fault investigation"
+}
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "analysis": "Based on the bug context and log analysis...",
+  "findings": {
+    "bug_related": true,
+    "confidence": 0.95,
+    "key_indicators": ["segmentation fault", "memory access violation"],
+    "recommendations": ["Check pointer dereferencing", "Verify memory allocation"]
+  }
+}
+```
+
+---
+
+### Enhanced Progress Tracking
+
+#### Real-Time Analysis Status
+All analysis endpoints now support enhanced progress tracking with visual feedback:
+
+**Progress States:**
+- `analysis-active`: Shows animated progress indicators
+- `analysis-complete`: Shows completion state with success styling
+- `analysis-error`: Shows error state with appropriate styling
+
+**Visual Features:**
+- Shimmer animations during processing
+- Rotating progress icons
+- Pulsing border effects
+- Gradient backgrounds
+- Smooth state transitions
+
+---
 
 #### Clear Session
 ```http

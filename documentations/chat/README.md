@@ -1,24 +1,35 @@
 
-# Phi-3 Offline Chatbot with Log Analysis
+# Bug Repro Engine with Assisted Debugging
 
-A powerful offline AI chatbot powered by Microsoft's Phi-3 model, featuring a modern web interface and advanced log file analysis capabilities. Perfect for developers and system administrators who need intelligent debugging assistance without sending sensitive data to cloud services.
+A powerful offline AI debugging assistant powered by Microsoft's Phi-3 model, featuring an enhanced web interface, intelligent log analysis, and integrated Bug Tracking System (BTS). Perfect for developers and system administrators who need contextual debugging assistance without sending sensitive data to cloud services.
 
 ## 🌟 Features
 
 ### Core Capabilities
 - **100% Offline Operation**: All processing happens locally on your machine
 - **GPU Acceleration**: Automatic CUDA support for faster responses
-- **Web Interface**: Modern, responsive design with dark theme
-- **Log Analysis**: Intelligent analysis of error logs and crash dumps
+- **Enhanced Web Interface**: Modern, responsive design with animated progress indicators
+- **Intelligent Log Analysis**: Advanced analysis of error logs and crash dumps with contextual insights
+- **Bug Tracking Integration**: Seamless integration with Bug Tracking System for contextual analysis
+- **Interactive Workflows**: Guide Me, Analyze Log, and Repro Scenario actions
 - **Session Management**: Maintains conversation context across interactions
-- **File Upload Support**: Drag-and-drop or browse for log files
+- **File Upload Support**: Drag-and-drop or browse for log files with visual feedback
+
+### Enhanced UI/UX (v1.3.0)
+- **Real-time Progress Indicators**: Animated shimmer effects and rotating icons
+- **Visual State Management**: Context-aware styling for different operation states
+- **Interactive Bug Actions**: Contextual action buttons for enhanced workflows
+- **Auto-Fetch Integration**: Automatic log file retrieval from bug records
+- **Enhanced Animations**: Smooth transitions and completion states
 
 ### Technical Features
 - 4-bit quantization for efficient memory usage
 - Conversation history with export functionality
 - Adjustable response parameters (temperature, length)
-- Real-time status indicators
-- Multi-format log file support
+- Real-time status indicators with enhanced visual feedback
+- Multi-format log file support with progress tracking
+- BTS backend integration with RESTful API
+- Enhanced error handling and recovery mechanisms
 
 ## 📋 Requirements
 
@@ -30,6 +41,7 @@ A powerful offline AI chatbot powered by Microsoft's Phi-3 model, featuring a mo
 
 ### Software Requirements
 - Python 3.8 or higher
+- Node.js 16.x or higher (for BTS backend)
 - CUDA Toolkit 11.8+ (for GPU acceleration)
 - Git (for cloning the repository)
 
@@ -38,13 +50,12 @@ A powerful offline AI chatbot powered by Microsoft's Phi-3 model, featuring a mo
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/askshameer/i-brow.git
-cd phi3-chatbot
+cd bug-repro-engine
 ```
 
 ### 2. Create Project Structure
 ```bash
-mkdir templates
-mkdir uploads
+mkdir templates uploads bts
 ```
 
 ### 3. Set Up Virtual Environment
@@ -78,7 +89,14 @@ pip install torch torchvision torchaudio
 pip install -r requirements.txt
 ```
 
-### 6. Save Application Files
+### 6. Setup BTS Backend
+```bash
+cd bts/src/backend
+npm install
+npm start  # Runs on port 3001
+```
+
+### 7. Save Application Files
 - Save `app.py` in the root directory
 - Save `chat.html` in the `templates/` directory
 
@@ -86,6 +104,11 @@ pip install -r requirements.txt
 
 ### Starting the Application
 ```bash
+# Start BTS backend (separate terminal)
+cd bts/src/backend
+npm start
+
+# Start Flask application (main terminal)
 python app.py
 ```
 
@@ -94,11 +117,13 @@ The application will:
 2. Start the web server on port 5000
 3. Display the URL: `http://localhost:5000`
 
-### Web Interface Guide
+### Enhanced Web Interface Guide
 
 #### Chat Features
 - **Send Message**: Type in the input field and press Enter or click Send
 - **Clear Chat**: Remove all messages and start fresh
+- **Bug Lookup**: Search and analyze specific bug records
+- **Enhanced Progress**: Watch real-time analysis progress with animations
 - **Download History**: Export conversation as a text file
 
 #### File Upload and Analysis
@@ -326,6 +351,41 @@ ALLOWED_EXTENSIONS = {'txt', 'log', 'xml', 'json', ...}
    - Temporary files are session-scoped
 4. **No External APIs**: No data sent to external services
 
+## 📚 Documentation Index
+
+### Quick References
+- **[QUICKSTART.md](QUICKSTART.md)** - Get up and running in 5 minutes
+- **[FEATURES.md](FEATURES.md)** - Comprehensive feature documentation  
+- **[UPGRADE_GUIDE.md](UPGRADE_GUIDE.md)** - Upgrade from v1.2.0 to v1.3.0
+
+### Technical Documentation
+- **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)** - Complete API reference
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history and release notes
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Production deployment guide
+
+### Development Resources
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute to the project
+- **[SECURITY.md](SECURITY.md)** - Security guidelines and best practices
+- **[../TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** - Common issues and solutions
+
+---
+
+## 🔒 Security & Privacy
+
+### Data Protection
+1. **Fully Offline**: All AI processing happens locally
+2. **No Telemetry**: No usage data collected or transmitted
+3. **Local Storage**: Conversation history stored locally only
+4. **File Security**: Uploaded files processed locally and can be auto-deleted
+5. **Network Isolation**: Optional BTS integration uses local network only
+
+### Security Features
+- Input validation and sanitization
+- XSS protection through proper HTML escaping
+- CSRF protection for state-changing operations
+- Secure file upload with type validation
+- Rate limiting and resource management
+
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -333,15 +393,33 @@ We welcome contributions! Please follow these steps:
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
 3. Make your changes
-4. Test thoroughly
+4. Test thoroughly (including new UI features)
 5. Submit a pull request
 
 ### Contribution Guidelines
 - Follow PEP 8 for Python code
+- Use consistent CSS naming conventions
 - Add comments for complex logic
 - Update documentation for new features
-- Include error handling
-- Test on both CPU and GPU
+- Include error handling and user feedback
+- Test on both CPU and GPU configurations
+- Verify animations work across different browsers
+
+### Development Setup
+```bash
+# Clone for development
+git clone https://github.com/askshameer/i-brow.git
+cd bug-repro-engine
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+python -m pytest tests/
+
+# Start development server with hot reload
+python app.py --debug
+```
 
 ## 📄 License
 
@@ -349,19 +427,23 @@ This project is licensed under the MIT License. See LICENSE file for details.
 
 ## 🙏 Acknowledgments
 
-- Microsoft for the Phi-3 model
-- Hugging Face for the Transformers library
-- Flask community for the web framework
-- Contributors and testers
+- Microsoft for the Phi-3 model and AI capabilities
+- Hugging Face for the Transformers library and model hosting
+- Flask community for the robust web framework
+- Open source CSS animation libraries for inspiration
+- Contributors and testers who helped improve the user experience
 
 ## 📞 Support
 
 For issues and questions:
-1. Check the Troubleshooting section
-2. Search existing GitHub issues
-3. Create a new issue with:
-   - System information
-   - Error messages
+1. Check the **[TROUBLESHOOTING.md](../TROUBLESHOOTING.md)** guide
+2. Review the **[FEATURES.md](FEATURES.md)** documentation
+3. Search existing GitHub issues
+4. Create a new issue with:
+   - System information (OS, Python version, GPU details)
+   - Error messages and browser console logs
+   - Steps to reproduce the issue
+   - Screenshots of UI issues (if applicable)
    - Steps to reproduce
 
 ## 🚧 Roadmap

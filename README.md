@@ -1,42 +1,51 @@
 
-# Phi-3 Offline Chatbot with BTS Integration
+# Bug Repro Engine with Assisted Debugging
 
-An offline chatbot implementation using Microsoft's Phi-3 model with integrated Bug Tracking System (BTS) and web interface for log analysis and bug management.
+An advanced offline debugging assistant powered by Microsoft's Phi-3 model with integrated Bug Tracking System (BTS) and enhanced web interface for intelligent log analysis and bug reproduction guidance.
 
 ## Features
 
 - 🚀 GPU-accelerated inference with CUDA support
 - 💬 Conversational memory and chat history
-- 🐛 Integrated Bug Tracking System (BTS) with lookup functionality
-- 📁 Log file analysis and crash dump examination
-- 🌐 Modern web interface with dark theme
-- 📦 Fully offline operation
+- 🐛 Integrated Bug Tracking System (BTS) with intelligent lookup functionality
+- 📁 Advanced log file analysis and crash dump examination with progress indicators
+- 🌐 Modern web interface with enhanced dark theme and animated progress states
+- 📦 Fully offline operation with local AI processing
 - 🔧 Configurable AI parameters (temperature, max tokens)
-- 📱 Responsive design for mobile and desktop
+- 📱 Responsive design optimized for mobile and desktop
+- 🎯 **NEW**: Interactive bug guidance with contextual assistance
+- 📊 **NEW**: Real-time analysis progress with visual feedback
+- 🔄 **NEW**: Enhanced reproduction scenario workflows
+- ✨ **NEW**: Animated progress indicators and completion states
 
 ## Components
 
 ### 1. Phi-3 Chatbot (Flask Backend)
 - **File**: `app.py`
 - Microsoft Phi-3-mini-4k-instruct model
-- Log analysis capabilities
-- File upload and processing
-- BTS integration endpoints
+- Advanced log analysis capabilities with progress tracking
+- File upload and processing with visual feedback
+- BTS integration endpoints with auto-fetch functionality
+- Real-time analysis status updates
 
 ### 2. Bug Tracking System (BTS)
 - **Location**: `bts/src/backend/`
 - Node.js REST API server
-- JSON-based bug database
-- CRUD operations for bug management
-- Demo data included
+- JSON-based bug database with demo data
+- CRUD operations for comprehensive bug management
+- Auto-fetch log files from bug records
+- Integration with main chat interface
 
-### 3. Web Interface
+### 3. Enhanced Web Interface
 - **Template**: `templates/chat.html`
-- Modern dark theme UI
-- Real-time chat interface
-- Bug lookup functionality
-- File upload with drag-and-drop
-- Responsive design
+- Modern dark theme UI with enhanced styling
+- Real-time chat interface with animated progress indicators
+- Interactive bug lookup with contextual action buttons
+- File upload with drag-and-drop and progress visualization
+- Responsive design with mobile optimization
+- **NEW**: Analysis progress indicators with shimmer animations
+- **NEW**: Contextual bug guidance workflows
+- **NEW**: Enhanced visual feedback for all operations
 
 ## Prerequisites
 
@@ -177,10 +186,24 @@ If you see "WARNING: CUDA not available. Running on CPU.", ensure:
 2. CUDA drivers are installed
 3. PyTorch is installed with CUDA support
 
+## Documentation
+
+### 📚 Complete Documentation
+- **[Features Guide](documentations/chat/FEATURES.md)** - Comprehensive feature documentation
+- **[Quick Start](documentations/chat/QUICKSTART.md)** - Get running in 5 minutes
+- **[API Documentation](documentations/chat/API_DOCUMENTATION.md)** - Complete API reference
+- **[Changelog](documentations/chat/CHANGELOG.md)** - Version history and updates
+- **[Troubleshooting](documentations/TROUBLESHOOTING.md)** - Common issues and solutions
+
+### 🔧 Development Resources
+- **[Contributing Guide](documentations/chat/CONTRIBUTING.md)** - How to contribute
+- **[Deployment Guide](documentations/chat/DEPLOYMENT.md)** - Production deployment
+- **[Security Guide](documentations/chat/SECURITY.md)** - Security best practices
+
 ## Troubleshooting
 
 ### CUDA not available
-```bash
+```powershell
 # Check PyTorch CUDA availability
 python -c "import torch; print(torch.cuda.is_available())"
 ```
@@ -190,6 +213,11 @@ python -c "import torch; print(torch.cuda.is_available())"
 - Reduce `max_new_tokens` in the pipeline configuration
 - Clear GPU memory by restarting the Python kernel
 
+### BTS Integration Issues
+- Ensure BTS backend is running on port 3001
+- Check network connectivity between Flask app and BTS
+- Verify bug database contains valid data
+
 ### Slow performance on CPU
 - The model will run significantly slower on CPU
 - Consider using a cloud GPU service or upgrading to a CUDA-capable GPU
@@ -197,11 +225,14 @@ python -c "import torch; print(torch.cuda.is_available())"
 ## Project Structure
 
 ```
-phi3-chatbot/
-├── main.py          # Main chatbot implementation
-├── requirements.txt # Python dependencies
-├── .gitignore      # Git ignore file
-└── README.md       # This file
+bug-repro-engine/
+├── app.py                      # Flask backend with Phi-3 integration
+├── templates/chat.html         # Enhanced web interface
+├── bts/src/backend/           # Bug Tracking System backend
+├── documentations/            # Complete documentation suite
+├── uploads/                   # Uploaded log files
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
 ```
 
 ## Contributing

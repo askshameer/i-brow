@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bug Reproduction Engine</title>
+    <title>Bug Repro Engine with Assisted Debugging</title>
     <style>
         * {
             margin: 0;
@@ -739,7 +739,106 @@
         .analysis-content {
             color: #e0e0e0;
             line-height: 1.6;
-        }        @media (max-width: 768px) {
+        }        /* Enhanced Analysis Progress Indicators */
+        .analysis-progress {
+            background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analysis-progress::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .analysis-progress-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .analysis-progress-text {
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .analysis-progress-text strong {
+            color: #3b82f6;
+            text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Pulsing border animation for active analysis */
+        .analysis-active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            animation: progressPulse 2s ease-in-out infinite;
+        }        @keyframes progressPulse {
+            0%, 100% { 
+                border-color: #3b82f6;
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            }
+            50% { 
+                border-color: #60a5fa;
+                box-shadow: 0 0 30px rgba(96, 165, 250, 0.6);
+            }
+        }
+
+        /* Analysis completion state */
+        .analysis-complete {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #1a2e1a 0%, #244724 100%);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            animation: completionFade 0.5s ease-in-out;
+        }
+
+        .analysis-complete::before {
+            display: none; /* Stop shimmer animation */
+        }
+
+        .analysis-complete .analysis-progress-icon {
+            animation: none; /* Stop rotation */
+            color: #10b981;
+        }
+
+        .analysis-complete .analysis-progress-text strong {
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+
+        @keyframes completionFade {
+            from { 
+                border-color: #3b82f6;
+                background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+            }
+            to { 
+                border-color: #10b981;
+                background: linear-gradient(135deg, #1a2e1a 0%, #244724 100%);
+            }
+        }
+
+        @media (max-width: 768px) {
             .message-content {
                 max-width: 85%;
             }
@@ -784,7 +883,7 @@
 <body>
     <div class="header">        <h1>
             <span class="status-indicator"></span>
-            Bug Reproduction Engine
+            Bug Repro Engine with Assisted Debugging
         </h1>
     </div>
 
@@ -821,7 +920,7 @@
         </div>
 
         <div class="loading" id="loadingIndicator">
-            <span>Phi-3 is thinking</span>
+            <span>Processing Request</span>
             <div class="loading-dots">
                 <span></span>
                 <span></span>
@@ -1106,7 +1205,18 @@
             messageDiv.innerHTML = messageContent;
             chatContainer.appendChild(messageDiv);
             chatContainer.scrollTop = chatContainer.scrollHeight;
-        }        function addAnalysisResult(analysis, findings) {
+              // Return the message element so it can be updated later
+            return messageDiv;
+        }        // Function to update an existing message
+        function updateMessage(messageElement, newText) {
+            const messageContent = messageElement.querySelector('.message-content');
+            if (messageContent) {
+                messageContent.innerHTML = escapeHtml(newText);
+                // Remove animation classes when updating with final results
+                messageContent.classList.remove('analysis-active');
+                messageContent.classList.add('analysis-complete');
+            }
+        }function addAnalysisResult(analysis, findings) {
             const chatContainer = document.getElementById('chatContainer');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message assistant';
@@ -1197,15 +1307,16 @@
                 console.error('Error uploading file:', error);
                 addMessage(`Error uploading ${file.name}`, 'assistant');
             }
-        }
-
-        async function analyzeFile(fileId) {
+        }        async function analyzeFile(fileId) {
             const button = document.getElementById(`analyze-${fileId}`);
             button.disabled = true;
             button.textContent = 'Analyzing...';
             
             // Show loading indicator
             document.getElementById('loadingIndicator').classList.add('show');
+              // Add progress message with enhanced styling
+            const progressMessage = addMessage('🔍 **Analysis in progress** - Processing log file...', 'assistant');
+            progressMessage.querySelector('.message-content').classList.add('analysis-progress', 'analysis-active');
             
             try {
                 const response = await fetch(`/analyze/${fileId}`, {
@@ -1215,16 +1326,17 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    addAnalysisResult(data.analysis, data.findings);
+                    // Update progress message with results
+                    updateMessage(progressMessage, `**📊 Log Analysis Results**\n\n${data.analysis}`);
                     button.textContent = 'Analyzed';
                 } else {
-                    addMessage(`Error analyzing file: ${data.error}`, 'assistant');
+                    updateMessage(progressMessage, `❌ Error analyzing file: ${data.error}`);
                     button.disabled = false;
                     button.textContent = 'Analyze';
                 }
             } catch (error) {
                 console.error('Error analyzing file:', error);
-                addMessage('Error analyzing file. Please try again.', 'assistant');
+                updateMessage(progressMessage, '❌ Error analyzing file. Please try again.');
                 button.disabled = false;
                 button.textContent = 'Analyze';
             } finally {
@@ -1361,31 +1473,367 @@ Would you like me to provide specific guidance for this **${currentBugData.categ
             } else {
                 addMessage('Please lookup a bug first to get specific guidance.', 'assistant');
             }
-        }
-
-        function analyzeLogAction(bugId) {
+        }        async function analyzeLogAction(bugId) {
             console.log('Analyze Log clicked for bug:', bugId);
             addMessage(`📊 **Log Analysis** initiated for bug ${bugId}`, 'assistant');
             
-            if (currentBugData) {
-                const analysisMessage = `Ready to analyze logs for **${currentBugData.title}**.
-
-**Analysis Focus Areas:**
-• **Error patterns** related to ${currentBugData.category} issues
-• **System state** at time of bug occurrence  
-• **Resource usage** and performance metrics
-• **Stack traces** and crash dumps
-
-**To proceed:**
-1. Upload relevant log files using the 📎 attachment button
-2. I'll analyze them for patterns related to this **${currentBugData.priority}** priority ${currentBugData.category} bug
-3. Provide insights and potential root causes
-
-Click the attachment button above to upload your log files.`;
-                addMessage(analysisMessage, 'assistant');
-            } else {
+            if (!currentBugData) {
                 addMessage('Please lookup a bug first, then upload log files for targeted analysis.', 'assistant');
+                return;
             }
+
+            // Step 1: Search bug description for file paths and log references
+            const bugDescription = currentBugData.description || '';
+            const bugTitle = currentBugData.title || '';
+            
+            // Extract potential file paths from bug description and title
+            const filePathRegex = /([A-Za-z]:\\[\w\\\.-]+|\/[\w\/\.-]+\.(?:log|txt|err|out|crash|trace|dmp|dump))/gi;
+            const logFileRegex = /(?:log|error|trace|crash|dump|output)[\s\-_]*(?:file|files?)?[:=\s]*([^\s\n,;]+\.(?:log|txt|err|out|crash|trace|dmp|dump))/gi;
+            const systemLogRegex = /(?:syslog|dmesg|kern\.log|auth\.log|daemon\.log|debug|messages|secure|boot\.log)/gi;
+            
+            let foundPaths = [];
+            let foundLogFiles = [];
+            let foundSystemLogs = [];
+            
+            // Extract file paths
+            let match;
+            while ((match = filePathRegex.exec(bugDescription + ' ' + bugTitle)) !== null) {
+                foundPaths.push(match[1]);
+            }
+            
+            // Extract log file references
+            logFileRegex.lastIndex = 0; // Reset regex
+            while ((match = logFileRegex.exec(bugDescription + ' ' + bugTitle)) !== null) {
+                foundLogFiles.push(match[1]);
+            }
+            
+            // Extract system log references
+            while ((match = systemLogRegex.exec(bugDescription + ' ' + bugTitle)) !== null) {
+                foundSystemLogs.push(match[0]);
+            }            // Step 2: Try to fetch log files from mentioned paths or check uploaded files
+            let analysisFiles = [];
+            let autoFetchedFiles = [];
+            
+            // First, try to auto-fetch files from mentioned paths
+            if (foundPaths.length > 0) {
+                for (const filePath of foundPaths) {
+                    try {
+                        const fileName = filePath.split(/[\\\/]/).pop();
+                        const response = await fetch('/fetch-log', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ 
+                                path: filePath,
+                                filename: fileName
+                            })
+                        });
+                        
+                        if (response.ok) {
+                            const data = await response.json();
+                            autoFetchedFiles.push({
+                                id: data.file.id,
+                                filename: fileName,
+                                path: filePath,
+                                size: data.file.size,
+                                source: 'auto-fetched'
+                            });
+                            analysisFiles.push(data.file);
+                        }
+                    } catch (error) {
+                        console.log(`Could not auto-fetch ${filePath}:`, error);
+                    }
+                }
+            }
+            
+            // Then check uploaded files for matches
+            let matchedFiles = [];
+            if (uploadedFiles && uploadedFiles.length > 0) {
+                uploadedFiles.forEach(file => {
+                    const fileName = file.filename.toLowerCase();
+                    const fileBaseName = fileName.replace(/\.\w+$/, '');
+                    
+                    // Check if uploaded file matches any found paths or log references
+                    const pathMatches = foundPaths.some(path => {
+                        const pathFile = path.split(/[\\\/]/).pop().toLowerCase();
+                        const pathBaseName = pathFile.replace(/\.\w+$/, '');
+                        return fileName === pathFile || 
+                               fileBaseName === pathBaseName ||
+                               fileName.includes(pathFile) || 
+                               pathFile.includes(fileName) ||
+                               fileBaseName.includes(pathBaseName) ||
+                               pathBaseName.includes(fileBaseName);
+                    });
+                    
+                    const logMatches = foundLogFiles.some(logFile => {
+                        const logFileName = logFile.toLowerCase();
+                        const logBaseName = logFileName.replace(/\.\w+$/, '');
+                        return fileName === logFileName ||
+                               fileBaseName === logBaseName ||
+                               fileName.includes(logFileName) || 
+                               logFileName.includes(fileName) ||
+                               fileBaseName.includes(logBaseName) ||
+                               logBaseName.includes(fileBaseName);
+                    });
+                    
+                    const systemLogMatches = foundSystemLogs.some(sysLog => {
+                        const sysLogLower = sysLog.toLowerCase();
+                        return fileName.includes(sysLogLower) || 
+                               fileBaseName.includes(sysLogLower);
+                    });
+                    
+                    // Also check if filename contains keywords related to the bug category
+                    const categoryKeywords = getCategoryKeywords(currentBugData.category);
+                    const categoryMatches = categoryKeywords.some(keyword => 
+                        fileName.includes(keyword.toLowerCase()) ||
+                        fileBaseName.includes(keyword.toLowerCase())
+                    );
+                    
+                    if (pathMatches || logMatches || systemLogMatches || categoryMatches) {
+                        matchedFiles.push(file);
+                        analysisFiles.push(file);
+                    }
+                });
+            }            // Step 3: Provide analysis results
+            let analysisMessage = `**Log Analysis for "${currentBugData.title}"**\n\n`;
+            
+            if (foundPaths.length > 0 || foundLogFiles.length > 0 || foundSystemLogs.length > 0) {
+                analysisMessage += `**🔍 Found log references in bug description:**\n`;
+                
+                if (foundPaths.length > 0) {
+                    analysisMessage += `• **File paths:** ${foundPaths.slice(0, 5).join(', ')}\n`;
+                }
+                if (foundLogFiles.length > 0) {
+                    analysisMessage += `• **Log files:** ${foundLogFiles.slice(0, 5).join(', ')}\n`;
+                }
+                if (foundSystemLogs.length > 0) {
+                    analysisMessage += `• **System logs:** ${foundSystemLogs.slice(0, 5).join(', ')}\n`;
+                }
+                analysisMessage += '\n';
+            }
+
+            // Combine all files to analyze
+            const totalFiles = autoFetchedFiles.length + matchedFiles.length;
+            
+            if (totalFiles > 0) {
+                if (autoFetchedFiles.length > 0) {
+                    analysisMessage += `**🔄 Auto-fetched ${autoFetchedFiles.length} log file(s) from mentioned paths:**\n`;
+                    autoFetchedFiles.forEach(file => {
+                        analysisMessage += `• ${file.filename} from ${file.path}\n`;
+                    });
+                    analysisMessage += '\n';
+                }
+                
+                if (matchedFiles.length > 0) {
+                    analysisMessage += `**✅ Found ${matchedFiles.length} matching uploaded file(s):**\n`;
+                    matchedFiles.forEach(file => {
+                        analysisMessage += `• ${file.filename} (${formatFileSize(file.size)})\n`;
+                    });
+                    analysisMessage += '\n';
+                }
+                
+                analysisMessage += `**🚀 Starting automatic analysis of ${totalFiles} file(s)...**\n`;
+                addMessage(analysisMessage, 'assistant');
+                
+                // Step 4: Automatically analyze all files
+                for (const file of analysisFiles) {
+                    await analyzeFileForBug(file.id, currentBugData);
+                }
+                
+            } else {
+                if (foundPaths.length > 0 || foundLogFiles.length > 0 || foundSystemLogs.length > 0) {
+                    analysisMessage += `**⚠️ Could not access mentioned log files**\n\n`;
+                    
+                    if (uploadedFiles.length > 0) {
+                        analysisMessage += `**📁 Currently uploaded files:**\n`;
+                        uploadedFiles.forEach(file => {
+                            analysisMessage += `• ${file.filename}\n`;
+                        });
+                        analysisMessage += '\n';
+                    }
+                    
+                    analysisMessage += `**💡 Recommended actions:**\n`;
+                    analysisMessage += `1. Check if the mentioned log files exist and are accessible\n`;
+                    analysisMessage += `2. Upload the specific log files mentioned in the bug report\n`;
+                    analysisMessage += `3. Upload related system logs (dmesg, syslog, kern.log)\n`;
+                    analysisMessage += `4. Include application-specific log files\n\n`;
+                }
+                
+                analysisMessage += `**📋 Analysis Focus Areas for ${currentBugData.category} issues:**\n`;
+                const focusAreas = getCategoryFocusAreas(currentBugData.category);
+                focusAreas.forEach(area => {
+                    analysisMessage += `• ${area}\n`;
+                });
+                
+                analysisMessage += `\n**📎 To proceed:** Upload relevant log files using the attachment button above.`;
+                addMessage(analysisMessage, 'assistant');
+            }
+        }
+
+        // Helper function to get category-specific keywords for file matching
+        function getCategoryKeywords(category) {
+            const keywordMap = {
+                'Audio': ['audio', 'alsa', 'pulse', 'sound', 'speaker', 'mic', 'playback', 'record'],
+                'Video': ['video', 'gpu', 'display', 'graphics', 'render', 'opengl', 'vulkan', 'mesa'],
+                'Driver': ['driver', 'module', 'firmware', 'device', 'hardware'],
+                'Kernel': ['kernel', 'dmesg', 'kern', 'boot', 'panic', 'oops'],
+                'Network': ['network', 'eth', 'wifi', 'wlan', 'tcp', 'udp', 'dns', 'dhcp'],
+                'Performance': ['perf', 'cpu', 'memory', 'disk', 'io', 'load', 'process'],
+                'Security': ['auth', 'secure', 'pam', 'sudo', 'permission', 'access'],
+                'Multimedia': ['media', 'codec', 'ffmpeg', 'gstreamer', 'stream'],
+                'Hardware': ['hardware', 'pci', 'usb', 'thermal', 'battery', 'power']
+            };
+            return keywordMap[category] || ['system', 'error', 'debug'];
+        }
+
+        // Helper function to get category-specific focus areas
+        function getCategoryFocusAreas(category) {
+            const focusMap = {
+                'Audio': [
+                    'Audio device initialization and configuration',
+                    'ALSA/PulseAudio service status and errors',
+                    'Audio codec and driver compatibility',
+                    'Audio routing and mixer settings'
+                ],
+                'Video': [
+                    'GPU driver loading and initialization',
+                    'Display configuration and mode setting',
+                    'Graphics rendering pipeline errors',
+                    'Video memory allocation issues'
+                ],
+                'Driver': [
+                    'Driver module loading and dependencies',
+                    'Hardware device detection and binding',
+                    'Firmware loading and initialization',
+                    'IRQ and DMA configuration issues'
+                ],
+                'Kernel': [
+                    'Kernel panic traces and call stacks',
+                    'Module loading and symbol resolution',
+                    'Memory management and allocation',
+                    'System call failures and errors'
+                ],
+                'Network': [
+                    'Network interface configuration',
+                    'Protocol stack errors and timeouts',
+                    'DNS resolution and routing issues',
+                    'Connection establishment failures'
+                ],
+                'Performance': [
+                    'CPU usage patterns and bottlenecks',
+                    'Memory leaks and allocation failures',
+                    'I/O performance and disk utilization',
+                    'Process scheduling and resource contention'
+                ]
+            };
+            return focusMap[category] || [
+                'System error patterns and frequencies',
+                'Resource utilization and limits',
+                'Service status and dependencies',
+                'Configuration validation and conflicts'
+            ];
+        }        // Enhanced file analysis function with bug context
+        async function analyzeFileForBug(fileId, bugData) {
+            try {
+                const progressMessage = addMessage(`🔍 **Analysis in progress** - Analyzing file for **${bugData.category}** issue: "${bugData.title}"...`, 'assistant');
+                progressMessage.querySelector('.message-content').classList.add('analysis-progress', 'analysis-active');
+                
+                const response = await fetch(`/analyze/${fileId}`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Create enhanced analysis message with bug context
+                    const contextualAnalysis = `**📊 Contextual Log Analysis Results**
+
+**Bug Context:** ${bugData.title} (${bugData.category} - ${bugData.priority} priority)
+
+**Analysis Results:**
+${data.analysis}
+
+**🎯 Specific to this ${bugData.category} issue:**
+${generateContextualInsights(data.findings, bugData)}
+
+**💡 Recommended Next Steps:**
+${generateRecommendations(data.findings, bugData)}`;
+
+                    // Update the progress message with the analysis results
+                    updateMessage(progressMessage, contextualAnalysis);                } else {
+                    // Update the progress message with error
+                    updateMessage(progressMessage, `❌ Error analyzing file: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Error analyzing file for bug:', error);
+                // Update the progress message with error
+                updateMessage(progressMessage, '❌ Error analyzing file. Please try again.');
+            }
+        }
+
+        // Generate contextual insights based on bug category and findings
+        function generateContextualInsights(findings, bugData) {
+            const category = bugData.category;
+            const priority = bugData.priority;
+            
+            let insights = [];
+            
+            if (findings.errors && findings.errors.length > 0) {
+                const criticalErrors = findings.errors.filter(err => 
+                    err.content.toLowerCase().includes(category.toLowerCase()) ||
+                    getCategoryKeywords(category).some(keyword => 
+                        err.content.toLowerCase().includes(keyword)
+                    )
+                );
+                
+                if (criticalErrors.length > 0) {
+                    insights.push(`• Found ${criticalErrors.length} ${category}-related error(s) in the logs`);
+                }
+            }
+            
+            if (findings.critical_issues && findings.critical_issues.length > 0) {
+                insights.push(`• Detected ${findings.critical_issues.length} critical issue(s) that may be causing this ${priority} priority bug`);
+            }
+            
+            if (findings.file_paths && findings.file_paths.length > 0) {
+                insights.push(`• Identified ${findings.file_paths.length} relevant file path(s) for debugging`);
+            }
+            
+            if (findings.stack_traces && findings.stack_traces.length > 0) {
+                insights.push(`• Found ${findings.stack_traces.length} stack trace(s) - essential for ${category} debugging`);
+            }
+            
+            return insights.length > 0 ? insights.join('\n') : `No specific ${category}-related patterns found in this log file.`;
+        }
+
+        // Generate recommendations based on findings and bug data
+        function generateRecommendations(findings, bugData) {
+            const recommendations = [];
+            
+            if (findings.critical_issues && findings.critical_issues.length > 0) {
+                recommendations.push('1. **Address critical issues first** - Focus on resolving segfaults, memory issues, or null pointer exceptions');
+            }
+            
+            if (findings.errors && findings.errors.length > 5) {
+                recommendations.push('2. **Pattern analysis** - Review error frequency and timing to identify root cause');
+            }
+            
+            if (findings.file_paths && findings.file_paths.length > 0) {
+                recommendations.push('3. **File system check** - Verify permissions and existence of referenced files');
+            }
+            
+            if (bugData.category === 'Driver' || bugData.category === 'Hardware') {
+                recommendations.push('4. **Hardware validation** - Check dmesg logs and lspci/lsusb output for device issues');
+            }
+            
+            if (bugData.category === 'Audio' || bugData.category === 'Video') {
+                recommendations.push('5. **Service restart** - Try restarting relevant services (pulseaudio, X11, wayland)');
+            }
+            
+            recommendations.push(`6. **${bugData.category} specific** - Consult ${bugData.category.toLowerCase()}-specific documentation and debugging guides`);
+            
+            return recommendations.join('\n');
         }
 
         function reproScenarioAction(bugId) {

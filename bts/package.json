@@ -1,7 +1,8 @@
 {
-  "name": "bug-tracker",
-  "version": "0.1.0",
+  "name": "bug-repro-engine-tracker",
+  "version": "1.3.0",
   "private": true,
+  "description": "Bug Tracking System component of Bug Repro Engine with Assisted Debugging",
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"

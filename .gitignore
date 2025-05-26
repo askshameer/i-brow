@@ -195,3 +195,67 @@ $RECYCLE.BIN/
 .directory
 .Trash-*
 .nfs*
+
+# Bug Repro Engine specific
+*.session
+*.chat_history
+temp_analysis/
+analysis_cache/
+model_cache/
+.phi3_cache/
+
+# BTS Backend
+bts/node_modules/
+bts/src/backend/node_modules/
+bts/.env
+bts/dist/
+bts/build/
+
+# Enhanced security
+.env.*.local
+config/secrets.json
+*.pem
+*.key
+*.crt
+*.p12
+*.keystore
+
+# Performance and profiling
+*.prof
+.coverage.*
+prof_output/
+memory_profiler/
+locust_reports/
+
+# Documentation build
+site/
+docs/_build/
+docs/build/
+
+# Enhanced development
+.mypy_cache/
+.ruff_cache/
+.black_cache/
+*.pyc.backup
+.pytest_cache/
+.tox/
+.nox/
+.cache/
+
+# IDE specific
+.vscode/settings.json
+.vscode/launch.json
+.idea/workspace.xml
+.idea/tasks.xml
+*.sublime-workspace
+*.code-workspace
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Database and session files
+*.db-journal
+*.db-wal
+sessions/
+chat_sessions/

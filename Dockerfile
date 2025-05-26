@@ -1,4 +1,4 @@
-# Multi-stage Docker build for Bug Reproduction Engine
+# Multi-stage Docker build for Bug Repro Engine with Assisted Debugging
 # Stage 1: Python environment with Phi-3 model
 FROM nvidia/cuda:12.1-devel-ubuntu22.04 AS python-base
 

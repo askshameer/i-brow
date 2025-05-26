@@ -19,3 +19,22 @@ mkdocstrings>=0.20.0
 # Testing tools
 requests-mock>=1.10.0
 faker>=18.0.0
+
+# Enhanced development tools for Bug Repro Engine
+selenium>=4.15.0          # For UI testing
+beautifulsoup4>=4.12.0    # For HTML parsing in tests
+coverage>=7.0.0           # Enhanced coverage reporting
+pytest-asyncio>=0.21.0    # Async testing support
+pytest-mock>=3.11.0       # Enhanced mocking
+responses>=0.23.0         # HTTP response mocking
+factory-boy>=3.3.0        # Test data factories
+
+# Performance and profiling
+memory-profiler>=0.61.0   # Memory usage profiling
+py-spy>=0.3.14           # Python profiler
+locust>=2.17.0           # Load testing
+
+# Code quality
+pylint>=3.0.0            # Enhanced linting
+autopep8>=2.0.0          # Code formatting
+vulture>=2.9.0           # Dead code detection
