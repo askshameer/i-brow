@@ -8,9 +8,22 @@ on:
       - 'bts/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
     - uses: actions/checkout@v4
@@ -48,15 +61,18 @@ jobs:
     - name: Run backend tests
       working-directory: ./bts/src/backend
       run: npm test
-    
-    # Deploy to hosting service (example using GitHub Pages for frontend)
-    - name: Deploy frontend to GitHub Pages
-      if: github.event_name == 'push'
-      uses: peaceiris/actions-gh-pages@v3
+      # Deploy to hosting service (example using GitHub Pages for frontend)
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload to GitHub Pages
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./bts/build
-        destination_dir: bts
+        path: ./bts/build
+    
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
     
     # For backend, you'd typically deploy to a service like:
     # - Heroku
