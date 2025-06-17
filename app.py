@@ -169,8 +169,7 @@ class Phi3Chatbot:
             model_name,
             trust_remote_code=True
         )
-        
-        # Configure model loading with explicit attention implementation
+          # Configure model loading with explicit attention implementation
         model_kwargs = {
             "trust_remote_code": True,
             "low_cpu_mem_usage": True,
@@ -178,21 +177,14 @@ class Phi3Chatbot:
         }
         
         if self.device == "cuda":
-            # Use 4-bit quantization for better memory efficiency
-            bnb_config = BitsAndBytesConfig(
-                load_in_4bit=True,
-                bnb_4bit_quant_type="nf4",
-                bnb_4bit_compute_dtype=torch.float16,
-                bnb_4bit_use_double_quant=True
-            )
-            
+            # Use standard FP16 precision instead of 4-bit quantization
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name,
-                quantization_config=bnb_config,
                 device_map="auto",
                 torch_dtype=torch.float16,
                 **model_kwargs
             )
+            print("Using GPU with standard FP16 precision (bitsandbytes disabled)")
         else:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_name,

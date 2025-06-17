@@ -820,11 +820,30 @@
         .analysis-complete .analysis-progress-icon {
             animation: none; /* Stop rotation */
             color: #10b981;
-        }
-
-        .analysis-complete .analysis-progress-text strong {
+        }        .analysis-complete .analysis-progress-text strong {
             color: #10b981;
             text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+        }
+        
+        /* Stop Analysis Button */
+        .stop-analysis-button {
+            margin-top: 10px;
+            padding: 6px 12px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        
+        .stop-analysis-button:hover {
+            background-color: #c0392b;
+        }
+        
+        .stop-analysis-button:active {
+            transform: translateY(1px);
         }
 
         @keyframes completionFade {
@@ -1211,6 +1230,12 @@
         function updateMessage(messageElement, newText) {
             const messageContent = messageElement.querySelector('.message-content');
             if (messageContent) {
+                // Remove stop button if it exists
+                const stopButton = messageContent.querySelector('.stop-analysis-button');
+                if (stopButton) {
+                    stopButton.remove();
+                }
+                
                 messageContent.innerHTML = escapeHtml(newText);
                 // Remove animation classes when updating with final results
                 messageContent.classList.remove('analysis-active');
@@ -1313,14 +1338,28 @@
             button.textContent = 'Analyzing...';
             
             // Show loading indicator
-            document.getElementById('loadingIndicator').classList.add('show');
-              // Add progress message with enhanced styling
+            document.getElementById('loadingIndicator').classList.add('show');            // Add progress message with enhanced styling
             const progressMessage = addMessage('🔍 **Analysis in progress** - Processing log file...', 'assistant');
-            progressMessage.querySelector('.message-content').classList.add('analysis-progress', 'analysis-active');
+            const messageContent = progressMessage.querySelector('.message-content');
+            messageContent.classList.add('analysis-progress', 'analysis-active');
             
-            try {
+            // Add stop button to the message
+            const stopButton = document.createElement('button');
+            stopButton.className = 'stop-analysis-button';
+            stopButton.textContent = 'Stop Analysis';
+            stopButton.onclick = function() {
+                abortAnalysis(fileId, progressMessage);
+            };
+            messageContent.appendChild(stopButton);
+            
+            // Create an AbortController to be able to cancel the fetch
+            const controller = new AbortController();
+            window.activeAnalysisControllers = window.activeAnalysisControllers || {};
+            window.activeAnalysisControllers[fileId] = controller;
+              try {
                 const response = await fetch(`/analyze/${fileId}`, {
-                    method: 'POST'
+                    method: 'POST',
+                    signal: controller.signal
                 });
                 
                 const data = await response.json();
@@ -1336,20 +1375,47 @@
                 }
             } catch (error) {
                 console.error('Error analyzing file:', error);
-                updateMessage(progressMessage, '❌ Error analyzing file. Please try again.');
+                if (error.name === 'AbortError') {
+                    updateMessage(progressMessage, '⚠️ Analysis was stopped by user.');
+                } else {
+                    updateMessage(progressMessage, '❌ Error analyzing file. Please try again.');
+                }
                 button.disabled = false;
                 button.textContent = 'Analyze';
             } finally {
                 document.getElementById('loadingIndicator').classList.remove('show');
+                // Clean up the controller reference
+                if (window.activeAnalysisControllers && window.activeAnalysisControllers[fileId]) {
+                    delete window.activeAnalysisControllers[fileId];
+                }
             }
-        }
-
-        function formatFileSize(bytes) {
+        }        function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
             const sizes = ['Bytes', 'KB', 'MB', 'GB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function abortAnalysis(fileId, messageElement) {
+            // Abort the fetch request
+            if (window.activeAnalysisControllers && window.activeAnalysisControllers[fileId]) {
+                window.activeAnalysisControllers[fileId].abort();
+                console.log(`Aborted analysis for file ${fileId}`);
+                
+                // Update the UI to show the analysis was stopped
+                const button = document.getElementById(`analyze-${fileId}`);
+                if (button) {
+                    button.disabled = false;
+                    button.textContent = 'Analyze';
+                }
+                
+                // Remove the stop button
+                const stopButton = messageElement.querySelector('.stop-analysis-button');
+                if (stopButton) {
+                    stopButton.remove();
+                }
+            }
         }
 
         async function clearChat() {
