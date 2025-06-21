@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug Repro Engine with Assisted Debugging</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         * {
             margin: 0;
@@ -857,7 +860,361 @@
             }
         }
 
+        /* Reproduction Simulation Modal Styles */
+        .repro-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        .repro-modal.show {
+            display: flex;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .repro-modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #4a9eff;
+            border-radius: 15px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(74, 158, 255, 0.3);
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                transform: translateY(-50px) scale(0.9);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .repro-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .repro-modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4a9eff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .repro-modal-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .repro-modal-close:hover {
+            background-color: #333;
+            color: #e0e0e0;
+            transform: rotate(90deg);
+        }
+
+        .repro-progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .repro-progress-bar {
+            width: 100%;
+            height: 25px;
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            border: 2px solid #333;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .repro-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4a9eff 0%, #60a5fa 50%, #3b82f6 100%);
+            width: 0%;
+            transition: width 0.8s ease-out;
+            position: relative;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(74, 158, 255, 0.4);
+        }
+
+        .repro-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShimmer 2s infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .repro-progress-text {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-weight: 600;
+            color: #4a9eff;
+            font-size: 1.1rem;
+        }
+
+        .repro-stage {
+            background-color: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            position: relative;
+            overflow: hidden;
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        .repro-stage.active {
+            opacity: 1;
+            border-color: #4a9eff;
+            background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
+            box-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
+            animation: stageActivate 0.5s ease-out;
+        }
+
+        .repro-stage.completed {
+            opacity: 1;
+            border-color: #10b981;
+            background: linear-gradient(135deg, #1a2e1a 0%, #244724 100%);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        @keyframes stageActivate {
+            from { 
+                transform: scale(0.98);
+                box-shadow: 0 0 5px rgba(74, 158, 255, 0.1);
+            }
+            to { 
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
+            }
+        }
+
+        .repro-stage-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .repro-stage-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #333;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .repro-stage.active .repro-stage-icon {
+            background-color: #4a9eff;
+            color: white;
+            animation: iconPulse 1.5s infinite;
+        }
+
+        .repro-stage.completed .repro-stage-icon {
+            background-color: #10b981;
+            color: white;
+            animation: none;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 20px rgba(74, 158, 255, 0.5);
+            }
+        }
+
+        .repro-stage-title {
+            font-weight: 600;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+
+        .repro-stage.active .repro-stage-title {
+            color: #4a9eff;
+        }
+
+        .repro-stage.completed .repro-stage-title {
+            color: #10b981;
+        }
+
+        .repro-stage-description {
+            color: #999;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            margin-left: 38px;
+        }
+
+        .repro-stage.active .repro-stage-description {
+            color: #b3d9ff;
+        }
+
+        .repro-stage.completed .repro-stage-description {
+            color: #86efac;
+        }
+
+        .repro-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #333;
+        }
+
+        .repro-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .repro-btn-primary {
+            background: linear-gradient(135deg, #4a9eff 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .repro-btn-primary:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #4f46e5 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 158, 255, 0.4);
+        }
+
+        .repro-btn-secondary {
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+        }
+
+        .repro-btn-secondary:hover {
+            background-color: #444;
+            border-color: #666;
+        }
+
+        .repro-completion-message {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #1a2e1a 0%, #244724 100%);
+            border: 2px solid #10b981;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .repro-completion-message.show {
+            display: block;
+            animation: completionShow 0.5s ease-out;
+        }
+
+        @keyframes completionShow {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .repro-completion-icon {
+            font-size: 3rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .repro-completion-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .repro-completion-text {
+            color: #86efac;
+            line-height: 1.5;
+        }
+
         @media (max-width: 768px) {
+            .repro-modal-content {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .repro-modal-title {
+                font-size: 1.3rem;
+            }
+
+            .repro-stage-description {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .repro-controls {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
             .message-content {
                 max-width: 85%;
             }
@@ -1011,6 +1368,138 @@
             <div style="color: #666; font-size: 0.875rem;">
                 <p>Model: Phi-3-mini-4k-instruct</p>
                 <p id="deviceInfo">Device: Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reproduction Simulation Modal -->
+    <div class="repro-modal" id="reproModal">
+        <div class="repro-modal-content">
+            <div class="repro-modal-header">
+                <div class="repro-modal-title">
+                    🔄 Reproduction Simulation
+                </div>
+                <button class="repro-modal-close" onclick="closeReproModal()">×</button>
+            </div>
+
+            <div class="repro-progress-container">
+                <div class="repro-progress-bar">
+                    <div class="repro-progress-fill" id="reproProgressFill"></div>
+                </div>
+                <div class="repro-progress-text" id="reproProgressText">0% Complete</div>
+            </div>
+
+            <div id="reproStages">
+                <div class="repro-stage" id="stage1">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">🔍</div>
+                        <div class="repro-stage-title">Decoding the Bug</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Analyzing bug report structure, extracting key parameters and environment requirements...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage2">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">⚙️</div>
+                        <div class="repro-stage-title">Generating Automation Script</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Creating automated test sequences based on reproduction steps and system configuration...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage3">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">🔎</div>
+                        <div class="repro-stage-title">Searching for Setup</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Scanning available test environments and matching hardware/software requirements...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage4">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">✅</div>
+                        <div class="repro-stage-title">Setup Found</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Compatible test environment located. Verifying configuration and dependencies...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage5">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">⏳</div>
+                        <div class="repro-stage-title">Setup Busy</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Test environment currently in use. Waiting for availability and resource allocation...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage6">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">📋</div>
+                        <div class="repro-stage-title">Queued for Run</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Test job submitted to execution queue. Preparing environment and loading test artifacts...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage7">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">⚡</div>
+                        <div class="repro-stage-title">Running in Progress</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Executing reproduction steps. Monitoring system behavior and collecting diagnostic data...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage8">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">🎯</div>
+                        <div class="repro-stage-title">Reproduction Complete</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Test execution finished. Analyzing results and generating comprehensive report...
+                    </div>
+                </div>
+
+                <div class="repro-stage" id="stage9">
+                    <div class="repro-stage-header">
+                        <div class="repro-stage-icon">✨</div>
+                        <div class="repro-stage-title">Issue Reproduced</div>
+                    </div>
+                    <div class="repro-stage-description">
+                        Bug successfully reproduced! All diagnostic data captured for analysis and resolution.
+                    </div>
+                </div>
+            </div>
+
+            <div class="repro-completion-message" id="reproCompletionMessage">
+                <div class="repro-completion-icon">🎉</div>
+                <div class="repro-completion-title">Reproduction Successful!</div>
+                <div class="repro-completion-text">
+                    The bug has been successfully reproduced in the test environment. 
+                    All diagnostic data and logs have been captured for further analysis.
+                </div>
+            </div>
+
+            <div class="repro-controls">
+                <button class="repro-btn repro-btn-primary" id="reproStartButton" onclick="startReproSimulation()">
+                    Start Simulation
+                </button>
+                <button class="repro-btn repro-btn-secondary" id="reproStopButton" onclick="stopReproSimulation()" style="display: none;">
+                    Stop Simulation
+                </button>
+                <button class="repro-btn repro-btn-secondary" onclick="closeReproModal()">
+                    Close
+                </button>
             </div>
         </div>
     </div>
@@ -1904,27 +2393,194 @@ ${generateRecommendations(data.findings, bugData)}`;
 
         function reproScenarioAction(bugId) {
             console.log('Repro Scenario clicked for bug:', bugId);
-            addMessage(`🔄 **Reproduction Scenario** initiated for bug ${bugId}`, 'assistant');
             
             if (currentBugData) {
-                const reproMessage = `Let's create a reproduction scenario for **${currentBugData.title}**.
-
-**Reproduction Planning:**
-• **Environment setup** for ${currentBugData.platform || 'target platform'}
-• **Step-by-step recreation** of the issue
-• **Expected vs actual behavior** documentation
-• **Consistency testing** across different conditions
-
-**Based on this ${currentBugData.category} bug:**
-1. I'll help you design test scenarios
-2. Create reproduction steps that isolate the issue
-3. Identify variables that affect the bug occurrence
-4. Document findings for the development team
-
-Would you like me to create a detailed reproduction plan for this **${currentBugData.priority}** priority issue?`;
-                addMessage(reproMessage, 'assistant');
+                // Show the reproduction simulation modal
+                showReproModal();
             } else {
                 addMessage('Please lookup a bug first to create a targeted reproduction scenario.', 'assistant');
+            }
+        }
+
+        // Reproduction Simulation Variables
+        let reproSimulationActive = false;
+        let reproCurrentStage = 0;
+        let reproSimulationInterval = null;
+
+        // Stage configuration with progress percentages and durations
+        const reproStages = [
+            { progress: 10, duration: 2000, id: 'stage1' },   // Decoding the bug
+            { progress: 25, duration: 3000, id: 'stage2' },   // Generating automation script
+            { progress: 40, duration: 2500, id: 'stage3' },   // Searching for setup
+            { progress: 55, duration: 1500, id: 'stage4' },   // Setup found
+            { progress: 70, duration: 3000, id: 'stage5' },   // Setup busy
+            { progress: 80, duration: 1000, id: 'stage6' },   // Queued for run
+            { progress: 90, duration: 4000, id: 'stage7' },   // Running in progress
+            { progress: 95, duration: 2000, id: 'stage8' },   // Reproduction Complete
+            { progress: 100, duration: 1500, id: 'stage9' }   // Issue reproduced
+        ];
+
+        function showReproModal() {
+            const modal = document.getElementById('reproModal');
+            modal.classList.add('show');
+            
+            // Reset modal state
+            resetReproSimulation();
+        }
+
+        function closeReproModal() {
+            const modal = document.getElementById('reproModal');
+            modal.classList.remove('show');
+            
+            // Stop any running simulation
+            stopReproSimulation();
+        }
+
+        function resetReproSimulation() {
+            // Reset progress bar
+            const progressFill = document.getElementById('reproProgressFill');
+            const progressText = document.getElementById('reproProgressText');
+            progressFill.style.width = '0%';
+            progressText.textContent = '0% Complete';
+            
+            // Reset all stages
+            for (let i = 1; i <= 9; i++) {
+                const stage = document.getElementById(`stage${i}`);
+                stage.classList.remove('active', 'completed');
+            }
+            
+            // Hide completion message
+            document.getElementById('reproCompletionMessage').classList.remove('show');
+            
+            // Reset buttons
+            document.getElementById('reproStartButton').style.display = 'inline-block';
+            document.getElementById('reproStopButton').style.display = 'none';
+            
+            // Reset simulation state
+            reproSimulationActive = false;
+            reproCurrentStage = 0;
+            
+            if (reproSimulationInterval) {
+                clearTimeout(reproSimulationInterval);
+                reproSimulationInterval = null;
+            }
+        }
+
+        function startReproSimulation() {
+            if (reproSimulationActive) return;
+            
+            reproSimulationActive = true;
+            reproCurrentStage = 0;
+            
+            // Update buttons
+            document.getElementById('reproStartButton').style.display = 'none';
+            document.getElementById('reproStopButton').style.display = 'inline-block';
+            
+            // Hide completion message
+            document.getElementById('reproCompletionMessage').classList.remove('show');
+            
+            // Start the first stage
+            executeNextStage();
+        }
+
+        function stopReproSimulation() {
+            reproSimulationActive = false;
+            
+            // Clear any pending timeouts
+            if (reproSimulationInterval) {
+                clearTimeout(reproSimulationInterval);
+                reproSimulationInterval = null;
+            }
+            
+            // Reset buttons
+            document.getElementById('reproStartButton').style.display = 'inline-block';
+            document.getElementById('reproStopButton').style.display = 'none';
+            
+            // Mark current stage as inactive if not completed
+            if (reproCurrentStage > 0 && reproCurrentStage <= reproStages.length) {
+                const currentStageElement = document.getElementById(reproStages[reproCurrentStage - 1].id);
+                if (currentStageElement && !currentStageElement.classList.contains('completed')) {
+                    currentStageElement.classList.remove('active');
+                }
+            }
+        }
+
+        function executeNextStage() {
+            if (!reproSimulationActive || reproCurrentStage >= reproStages.length) {
+                // Simulation completed
+                completeReproSimulation();
+                return;
+            }
+            
+            const stage = reproStages[reproCurrentStage];
+            const stageElement = document.getElementById(stage.id);
+            
+            // Mark previous stage as completed
+            if (reproCurrentStage > 0) {
+                const previousStage = document.getElementById(reproStages[reproCurrentStage - 1].id);
+                previousStage.classList.remove('active');
+                previousStage.classList.add('completed');
+            }
+            
+            // Activate current stage
+            stageElement.classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar(stage.progress);
+            
+            reproCurrentStage++;
+            
+            // Schedule next stage
+            reproSimulationInterval = setTimeout(() => {
+                if (reproSimulationActive) {
+                    executeNextStage();
+                }
+            }, stage.duration);
+        }
+
+        function updateProgressBar(progress) {
+            const progressFill = document.getElementById('reproProgressFill');
+            const progressText = document.getElementById('reproProgressText');
+            
+            progressFill.style.width = progress + '%';
+            progressText.textContent = progress + '% Complete';
+        }
+
+        function completeReproSimulation() {
+            reproSimulationActive = false;
+            
+            // Mark final stage as completed
+            if (reproCurrentStage > 0) {
+                const finalStage = document.getElementById(reproStages[reproCurrentStage - 1].id);
+                finalStage.classList.remove('active');
+                finalStage.classList.add('completed');
+            }
+            
+            // Show completion message
+            document.getElementById('reproCompletionMessage').classList.add('show');
+            
+            // Reset buttons
+            document.getElementById('reproStartButton').style.display = 'inline-block';
+            document.getElementById('reproStopButton').style.display = 'none';
+            
+            // Add completion message to chat
+            if (currentBugData) {
+                const completionMessage = `✅ **Reproduction Simulation Completed** for bug ${currentBugData.id}
+
+**Results:**
+• Bug successfully reproduced in simulated environment
+• All diagnostic data captured and analyzed
+• Reproduction steps validated and documented
+• Issue confirmed as reproducible
+
+**Next Steps:**
+1. Review captured logs and system state
+2. Analyze root cause based on reproduction data
+3. Develop targeted fix based on findings
+4. Validate fix against reproduction scenario
+
+The simulation demonstrates a successful reproduction workflow for **${currentBugData.title}**.`;
+                addMessage(completionMessage, 'assistant');
             }
         }
     </script>

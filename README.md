@@ -8,6 +8,7 @@ An intelligent AI-powered debugging assistant that helps developers analyze bugs
 - 🤖 **Microsoft Phi-3 AI Model**: State-of-the-art language model for intelligent bug analysis
 - 📁 **Multi-Format Log Analysis**: Support for .log, .txt, .err, .out, .crash, .trace, .dmp files
 - 🐛 **Integrated Bug Tracking System**: Full-featured BTS with search and management
+- 🔄 **Interactive Reproduction Simulation**: Advanced modal-based simulation for bug reproduction scenarios
 - 🎯 **Real-Time Progress Tracking**: Visual feedback during analysis with progress indicators
 - 🌐 **Modern Web Interface**: Responsive chat-based UI with drag-and-drop file upload
 - 💾 **Offline Operation**: Complete functionality without internet after initial setup
@@ -95,7 +96,30 @@ We provide comprehensive documentation to help you get started and contribute ef
 2. **Upload log files** via drag-and-drop interface
 3. **Chat with AI** about your bugs and issues
 4. **Search bugs** using IDs (e.g., `BUG-DEMO-1748084066155-0`)
-5. **Get insights** through AI-powered analysis
+5. **Use reproduction simulation** for bug scenario testing
+6. **Get insights** through AI-powered analysis
+
+### 🔄 Reproduction Simulation (New in v4.0.0)
+The integrated reproduction simulation feature provides an interactive, visual workflow for testing bug scenarios:
+
+#### **Simulation Stages:**
+- 🔍 **Decoding the Bug** - Analyzes bug report structure and parameters
+- ⚙️ **Generating Automation Script** - Creates automated test sequences
+- 🔎 **Searching for Setup** - Scans for compatible test environments
+- ✅ **Setup Found** - Verifies configuration and dependencies
+- ⏳ **Setup Busy** - Waits for resource allocation
+- 📋 **Queued for Run** - Submits test job to execution queue
+- ⚡ **Running in Progress** - Executes reproduction steps
+- 🎯 **Reproduction Complete** - Generates comprehensive report
+- ✨ **Issue Reproduced** - Captures diagnostic data for analysis
+
+#### **How to Use:**
+1. Look up a bug using the Bug Lookup feature
+2. Click the **"Repro Scenario"** button on the bug card
+3. Launch the interactive simulation modal
+4. Click **"Start Simulation"** to begin the reproduction process
+5. Watch the real-time progress through all 9 stages
+6. Review the completion report and captured data
 
 ### Supported File Types
 - **Log files**: `.log`, `.txt`
