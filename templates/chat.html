@@ -891,11 +891,13 @@
             padding: 2rem;
             width: 90%;
             max-width: 600px;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
             position: relative;
             box-shadow: 0 20px 60px rgba(74, 158, 255, 0.3);
             animation: modalSlideIn 0.4s ease-out;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes modalSlideIn {
@@ -1002,55 +1004,85 @@
             background-color: #2a2a2a;
             border: 1px solid #333;
             border-radius: 10px;
-            padding: 1rem;
-            margin: 1rem 0;
+            padding: 2rem 1.5rem;
+            margin: 0;
             position: relative;
-            overflow: hidden;
-            opacity: 0.5;
-            transition: all 0.5s ease;
+            overflow: visible;
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.8s ease;
+            height: 280px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         .repro-stage.active {
             opacity: 1;
             border-color: #4a9eff;
             background: linear-gradient(135deg, #1a2332 0%, #243447 100%);
-            box-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
-            animation: stageActivate 0.5s ease-out;
+            box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+            animation: stageFadeIn 0.8s ease-out;
+            transform: scale(1.02);
         }
 
-        .repro-stage.completed {
-            opacity: 1;
-            border-color: #10b981;
-            background: linear-gradient(135deg, #1a2e1a 0%, #244724 100%);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        .repro-stage.fade-out {
+            opacity: 0;
+            animation: stageFadeOut 0.6s ease-in;
         }
 
-        @keyframes stageActivate {
-            from { 
-                transform: scale(0.98);
+        @keyframes stageFadeIn {
+            0% { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
                 box-shadow: 0 0 5px rgba(74, 158, 255, 0.1);
             }
-            to { 
-                transform: scale(1);
-                box-shadow: 0 0 20px rgba(74, 158, 255, 0.2);
+            50% {
+                opacity: 0.7;
+                transform: translateY(10px) scale(0.98);
+            }
+            100% { 
+                opacity: 1;
+                transform: translateY(0) scale(1.02);
+                box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+            }
+        }
+
+        @keyframes stageFadeOut {
+            0% { 
+                opacity: 1;
+                transform: translateY(0) scale(1.02);
+                box-shadow: 0 0 30px rgba(74, 158, 255, 0.3);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(-10px) scale(0.98);
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(-30px) scale(0.95);
+                box-shadow: 0 0 5px rgba(74, 158, 255, 0.1);
             }
         }
 
         .repro-stage-header {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 0.75rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .repro-stage-icon {
-            width: 30px;
-            height: 30px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 2.5rem;
             font-weight: bold;
             background-color: #333;
             color: #999;
@@ -1058,9 +1090,10 @@
         }
 
         .repro-stage.active .repro-stage-icon {
-            background-color: #4a9eff;
+            background: linear-gradient(135deg, #4a9eff 0%, #60a5fa 100%);
             color: white;
-            animation: iconPulse 1.5s infinite;
+            animation: iconPulse 2s infinite;
+            box-shadow: 0 0 25px rgba(74, 158, 255, 0.4);
         }
 
         .repro-stage.completed .repro-stage-icon {
@@ -1072,22 +1105,25 @@
         @keyframes iconPulse {
             0%, 100% { 
                 transform: scale(1);
-                box-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+                box-shadow: 0 0 25px rgba(74, 158, 255, 0.4);
             }
             50% { 
-                transform: scale(1.1);
-                box-shadow: 0 0 20px rgba(74, 158, 255, 0.5);
+                transform: scale(1.05);
+                box-shadow: 0 0 35px rgba(74, 158, 255, 0.6);
             }
         }
 
         .repro-stage-title {
-            font-weight: 600;
+            font-weight: 700;
             color: #e0e0e0;
-            font-size: 1rem;
+            font-size: 1.4rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
         }
 
         .repro-stage.active .repro-stage-title {
             color: #4a9eff;
+            text-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
         }
 
         .repro-stage.completed .repro-stage-title {
@@ -1096,9 +1132,13 @@
 
         .repro-stage-description {
             color: #999;
-            font-size: 0.875rem;
-            line-height: 1.4;
-            margin-left: 38px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: center;
+            max-width: 450px;
+            margin-top: 0.5rem;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
         }
 
         .repro-stage.active .repro-stage-description {
@@ -1113,9 +1153,12 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
             padding-top: 1rem;
             border-top: 1px solid #333;
+            position: relative;
+            z-index: 10;
+            background-color: inherit;
         }
 
         .repro-btn {
@@ -1199,15 +1242,37 @@
                 width: 95%;
                 padding: 1.5rem;
                 margin: 1rem;
+                max-height: 90vh;
             }
 
             .repro-modal-title {
                 font-size: 1.3rem;
             }
 
+            #reproStagesContainer {
+                min-height: 270px !important;
+                max-height: 270px !important;
+                padding: 10px 0 !important;
+            }
+
+            .repro-stage {
+                height: 250px !important;
+                padding: 1.5rem 1rem !important;
+            }
+
+            .repro-stage-icon {
+                width: 60px !important;
+                height: 60px !important;
+                font-size: 2rem !important;
+            }
+
+            .repro-stage-title {
+                font-size: 1.2rem !important;
+            }
+
             .repro-stage-description {
-                margin-left: 0;
-                margin-top: 0.5rem;
+                font-size: 0.875rem !important;
+                max-width: 300px !important;
             }
 
             .repro-controls {
@@ -1389,94 +1454,15 @@
                 <div class="repro-progress-text" id="reproProgressText">0% Complete</div>
             </div>
 
-            <div id="reproStages">
-                <div class="repro-stage" id="stage1">
+            <div id="reproStagesContainer" style="min-height: 300px; max-height: 300px; position: relative; margin-bottom: 1rem; overflow: visible; padding: 10px 0;">
+                <!-- Single dynamic stage display -->
+                <div class="repro-stage" id="currentStage" style="position: absolute; width: calc(100% - 2rem); top: 10px; left: 1rem; right: 1rem;">
                     <div class="repro-stage-header">
-                        <div class="repro-stage-icon">🔍</div>
-                        <div class="repro-stage-title">Decoding the Bug</div>
+                        <div class="repro-stage-icon" id="stageIcon">🔍</div>
+                        <div class="repro-stage-title" id="stageTitle">Ready to Start</div>
                     </div>
-                    <div class="repro-stage-description">
-                        Analyzing bug report structure, extracting key parameters and environment requirements...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage2">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">⚙️</div>
-                        <div class="repro-stage-title">Generating Automation Script</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Creating automated test sequences based on reproduction steps and system configuration...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage3">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">🔎</div>
-                        <div class="repro-stage-title">Searching for Setup</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Scanning available test environments and matching hardware/software requirements...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage4">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">✅</div>
-                        <div class="repro-stage-title">Setup Found</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Compatible test environment located. Verifying configuration and dependencies...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage5">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">⏳</div>
-                        <div class="repro-stage-title">Setup Busy</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Test environment currently in use. Waiting for availability and resource allocation...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage6">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">📋</div>
-                        <div class="repro-stage-title">Queued for Run</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Test job submitted to execution queue. Preparing environment and loading test artifacts...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage7">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">⚡</div>
-                        <div class="repro-stage-title">Running in Progress</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Executing reproduction steps. Monitoring system behavior and collecting diagnostic data...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage8">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">🎯</div>
-                        <div class="repro-stage-title">Reproduction Complete</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Test execution finished. Analyzing results and generating comprehensive report...
-                    </div>
-                </div>
-
-                <div class="repro-stage" id="stage9">
-                    <div class="repro-stage-header">
-                        <div class="repro-stage-icon">✨</div>
-                        <div class="repro-stage-title">Issue Reproduced</div>
-                    </div>
-                    <div class="repro-stage-description">
-                        Bug successfully reproduced! All diagnostic data captured for analysis and resolution.
+                    <div class="repro-stage-description" id="stageDescription">
+                        Click "Start Simulation" to begin the reproduction process
                     </div>
                 </div>
             </div>
@@ -2409,15 +2395,69 @@ ${generateRecommendations(data.findings, bugData)}`;
 
         // Stage configuration with progress percentages and durations
         const reproStages = [
-            { progress: 10, duration: 2000, id: 'stage1' },   // Decoding the bug
-            { progress: 25, duration: 3000, id: 'stage2' },   // Generating automation script
-            { progress: 40, duration: 2500, id: 'stage3' },   // Searching for setup
-            { progress: 55, duration: 1500, id: 'stage4' },   // Setup found
-            { progress: 70, duration: 3000, id: 'stage5' },   // Setup busy
-            { progress: 80, duration: 1000, id: 'stage6' },   // Queued for run
-            { progress: 90, duration: 4000, id: 'stage7' },   // Running in progress
-            { progress: 95, duration: 2000, id: 'stage8' },   // Reproduction Complete
-            { progress: 100, duration: 1500, id: 'stage9' }   // Issue reproduced
+            { 
+                progress: 10, 
+                duration: 2000, 
+                icon: '🔍', 
+                title: 'Decoding the Bug', 
+                description: 'Analyzing bug report structure, extracting key parameters and environment requirements...' 
+            },
+            { 
+                progress: 25, 
+                duration: 3000, 
+                icon: '⚙️', 
+                title: 'Generating Automation Script', 
+                description: 'Creating automated test sequences based on reproduction steps and system configuration...' 
+            },
+            { 
+                progress: 40, 
+                duration: 2500, 
+                icon: '🔎', 
+                title: 'Searching for Setup', 
+                description: 'Scanning available test environments and matching hardware/software requirements...' 
+            },
+            { 
+                progress: 55, 
+                duration: 1500, 
+                icon: '✅', 
+                title: 'Setup Found', 
+                description: 'Compatible test environment located. Verifying configuration and dependencies...' 
+            },
+            { 
+                progress: 70, 
+                duration: 10000, 
+                icon: '⏳', 
+                title: 'Setup Busy', 
+                description: 'Test environment currently in use. Waiting for availability and resource allocation...' 
+            },
+            { 
+                progress: 80, 
+                duration: 7000, 
+                icon: '📋', 
+                title: 'Queued for Run', 
+                description: 'Test job submitted to execution queue. Preparing environment and loading test artifacts...' 
+            },
+            { 
+                progress: 90, 
+                duration: 15000, 
+                icon: '⚡', 
+                title: 'Running in Progress', 
+                description: 'Executing reproduction steps. Monitoring system behavior and collecting diagnostic data...' 
+            },
+            { 
+                progress: 95, 
+                duration: 2000, 
+                icon: '🎯', 
+                title: 'Reproduction Complete', 
+                description: 'Test execution finished. Analyzing results and generating comprehensive report...' 
+            },
+            { 
+                progress: 100, 
+                duration: 1500, 
+                icon: '✨', 
+                title: 'Issue Reproduced', 
+                description: 'Bug successfully reproduced! All diagnostic data captured for analysis and resolution.' 
+            }
         ];
 
         function showReproModal() {
@@ -2443,11 +2483,16 @@ ${generateRecommendations(data.findings, bugData)}`;
             progressFill.style.width = '0%';
             progressText.textContent = '0% Complete';
             
-            // Reset all stages
-            for (let i = 1; i <= 9; i++) {
-                const stage = document.getElementById(`stage${i}`);
-                stage.classList.remove('active', 'completed');
-            }
+            // Reset stage display to initial state
+            const stage = document.getElementById('currentStage');
+            const stageIcon = document.getElementById('stageIcon');
+            const stageTitle = document.getElementById('stageTitle');
+            const stageDescription = document.getElementById('stageDescription');
+            
+            stage.classList.remove('active', 'fade-out');
+            stageIcon.textContent = '🔍';
+            stageTitle.textContent = 'Ready to Start';
+            stageDescription.textContent = 'Click "Start Simulation" to begin the reproduction process';
             
             // Hide completion message
             document.getElementById('reproCompletionMessage').classList.remove('show');
@@ -2496,13 +2541,10 @@ ${generateRecommendations(data.findings, bugData)}`;
             document.getElementById('reproStartButton').style.display = 'inline-block';
             document.getElementById('reproStopButton').style.display = 'none';
             
-            // Mark current stage as inactive if not completed
-            if (reproCurrentStage > 0 && reproCurrentStage <= reproStages.length) {
-                const currentStageElement = document.getElementById(reproStages[reproCurrentStage - 1].id);
-                if (currentStageElement && !currentStageElement.classList.contains('completed')) {
-                    currentStageElement.classList.remove('active');
-                }
-            }
+            // Fade out current stage
+            const stage = document.getElementById('currentStage');
+            stage.classList.remove('active');
+            stage.classList.add('fade-out');
         }
 
         function executeNextStage() {
@@ -2512,21 +2554,27 @@ ${generateRecommendations(data.findings, bugData)}`;
                 return;
             }
             
-            const stage = reproStages[reproCurrentStage];
-            const stageElement = document.getElementById(stage.id);
+            const stageData = reproStages[reproCurrentStage];
+            const stage = document.getElementById('currentStage');
+            const stageIcon = document.getElementById('stageIcon');
+            const stageTitle = document.getElementById('stageTitle');
+            const stageDescription = document.getElementById('stageDescription');
             
-            // Mark previous stage as completed
+            // First, fade out current content (if not first stage)
             if (reproCurrentStage > 0) {
-                const previousStage = document.getElementById(reproStages[reproCurrentStage - 1].id);
-                previousStage.classList.remove('active');
-                previousStage.classList.add('completed');
+                stage.classList.add('fade-out');
+                
+                // Wait for fade out to complete, then update content and fade in
+                setTimeout(() => {
+                    updateStageContent(stageData, stage, stageIcon, stageTitle, stageDescription);
+                }, 600); // Match fade out animation duration
+            } else {
+                // First stage - just update content and fade in
+                updateStageContent(stageData, stage, stageIcon, stageTitle, stageDescription);
             }
             
-            // Activate current stage
-            stageElement.classList.add('active');
-            
             // Update progress bar
-            updateProgressBar(stage.progress);
+            updateProgressBar(stageData.progress);
             
             reproCurrentStage++;
             
@@ -2535,7 +2583,18 @@ ${generateRecommendations(data.findings, bugData)}`;
                 if (reproSimulationActive) {
                     executeNextStage();
                 }
-            }, stage.duration);
+            }, stageData.duration);
+        }
+
+        function updateStageContent(stageData, stage, stageIcon, stageTitle, stageDescription) {
+            // Update content
+            stageIcon.textContent = stageData.icon;
+            stageTitle.textContent = stageData.title;
+            stageDescription.textContent = stageData.description;
+            
+            // Remove fade-out and add active classes
+            stage.classList.remove('fade-out');
+            stage.classList.add('active');
         }
 
         function updateProgressBar(progress) {
@@ -2549,15 +2608,19 @@ ${generateRecommendations(data.findings, bugData)}`;
         function completeReproSimulation() {
             reproSimulationActive = false;
             
-            // Mark final stage as completed
-            if (reproCurrentStage > 0) {
-                const finalStage = document.getElementById(reproStages[reproCurrentStage - 1].id);
-                finalStage.classList.remove('active');
-                finalStage.classList.add('completed');
-            }
+            // Hide final stage and show completion message after a brief delay
+            const stage = document.getElementById('currentStage');
             
-            // Show completion message
-            document.getElementById('reproCompletionMessage').classList.add('show');
+            // Wait for the final stage to be visible for a moment, then fade it out
+            setTimeout(() => {
+                stage.classList.remove('active');
+                stage.classList.add('fade-out');
+                
+                // Show completion message after final stage fades out
+                setTimeout(() => {
+                    document.getElementById('reproCompletionMessage').classList.add('show');
+                }, 600); // Wait for fade out animation
+            }, 1500); // Show final stage for 1.5 seconds
             
             // Reset buttons
             document.getElementById('reproStartButton').style.display = 'inline-block';
