@@ -671,6 +671,232 @@ def get_bug(bug_id):
     except Exception as e:
         return jsonify({'error': f'Error connecting to BTS: {str(e)}'}), 500
 
+@app.route('/generate_script', methods=['POST'])
+def generate_script():
+    """Generate Python automation script from bug description"""
+    try:
+        data = request.json
+        bug_id = data.get('bug_id', '')
+        
+        if not bug_id:
+            return jsonify({'error': 'Bug ID is required'}), 400
+        
+        # Fetch bug data from BTS backend
+        import requests
+        response = requests.get('http://localhost:3001/api/bugs', timeout=10)
+        if response.status_code != 200:
+            return jsonify({'error': 'Failed to fetch bug data from BTS'}), 503
+            
+        bugs = response.json()
+        bug = next((b for b in bugs if b['id'] == bug_id), None)
+        
+        if not bug:
+            return jsonify({'error': f'Bug with ID {bug_id} not found'}), 404
+        
+        # Extract information from bug
+        title = bug.get('title', 'Unknown Bug')
+        description = bug.get('description', '')
+        platform = bug.get('platform', 'linux')
+        category = bug.get('category', 'general')
+        priority = bug.get('priority', 'medium')
+        
+        # Extract steps from description
+        steps_match = re.search(r'Steps to Reproduce:(.*?)(?=Expected Result:|Actual Result:|$)', description, re.DOTALL | re.IGNORECASE)
+        steps = steps_match.group(1).strip() if steps_match else 'No specific steps provided'
+        
+        # Extract expected and actual results
+        expected_match = re.search(r'Expected Result:(.*?)(?=Actual Result:|$)', description, re.DOTALL | re.IGNORECASE)
+        expected_result = expected_match.group(1).strip() if expected_match else 'Not specified'
+        
+        actual_match = re.search(r'Actual Result:(.*?)(?=$)', description, re.DOTALL | re.IGNORECASE)
+        actual_result = actual_match.group(1).strip() if actual_match else 'Not specified'
+        
+        # Create AI prompt for script generation
+        ai_prompt = f"""You are an expert test automation engineer. Generate a comprehensive Python automation script to reproduce and test the following bug:
+
+**Bug Information:**
+- ID: {bug_id}
+- Title: {title}
+- Category: {category}
+- Platform: {platform}
+- Priority: {priority}
+
+**Bug Description:**
+{description}
+
+**Steps to Reproduce:**
+{steps}
+
+**Expected Result:**
+{expected_result}
+
+**Actual Result:**
+{actual_result}
+
+**Requirements:**
+1. Create a complete Python script with proper imports and error handling
+2. Include a main class called 'BugReproductionTest' 
+3. Implement the exact reproduction steps from the bug description
+4. Add appropriate logging and test result tracking
+5. Include platform-specific logic for {platform}
+6. Add category-specific tests for {category} issues
+7. Generate a detailed test report
+8. Include setup, execution, and cleanup methods
+9. Make the script executable and well-documented
+10. Add comments explaining each step
+
+**Focus Areas for {category} Category:**
+- For 'Multimedia': Test audio/video systems, codecs, media playback
+- For 'Driver': Test hardware detection, module loading, device functionality  
+- For 'Kernel': Test system calls, kernel modules, system stability
+- For 'Performance': Test resource usage, benchmarks, load testing
+- For 'Network': Test connectivity, protocols, network interfaces
+- For 'Security': Test permissions, authentication, access controls
+
+Generate ONLY the Python script code, starting with the shebang line. Make it production-ready and comprehensive."""
+
+        try:
+            # Use the existing Phi-3 chatbot to generate the script
+            session_id = f"script_gen_{bug_id}_{int(datetime.now().timestamp())}"
+            ai_response = chatbot.chat(ai_prompt, session_id)
+            
+            # Clean up the AI response to ensure it's valid Python code
+            script = ai_response.strip()
+            
+            # Ensure the script starts with shebang if not present
+            if not script.startswith('#!/usr/bin/env python3'):
+                script = '#!/usr/bin/env python3\n' + script
+            
+            # Add metadata header if not present
+            if f'Bug ID: {bug_id}' not in script:
+                header = f'''#!/usr/bin/env python3
+"""
+AI-Generated Automated Test Script for Bug: {title}
+Bug ID: {bug_id}
+Platform: {platform}
+Category: {category}
+Priority: {priority}
+Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+Generated using: Phi-3-mini-4k-instruct AI Model
+"""
+
+'''
+                # Remove the first shebang line if it exists and add our header
+                if script.startswith('#!/usr/bin/env python3'):
+                    script = script[len('#!/usr/bin/env python3'):].lstrip('\n')
+                script = header + script
+            
+        except Exception as e:
+            # Fallback to a basic template if AI generation fails
+            print(f"AI script generation failed: {e}, falling back to template")
+            script = f'''#!/usr/bin/env python3
+"""
+Automated Test Script for Bug: {title}
+Bug ID: {bug_id}
+Platform: {platform}
+Category: {category}
+Priority: {priority}
+Generated on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+Note: Generated using fallback template due to AI generation error
+"""
+
+import os
+import sys
+import subprocess
+import time
+import logging
+from datetime import datetime
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(f'bug_reproduction_{{datetime.now().strftime("%Y%m%d_%H%M%S")}}.log'),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
+logger = logging.getLogger(__name__)
+
+class BugReproductionTest:
+    def __init__(self):
+        self.bug_id = "{bug_id}"
+        self.title = "{title}"
+        self.platform = "{platform}"
+        self.category = "{category}"
+        self.priority = "{priority}"
+        self.test_results = []
+        self.start_time = datetime.now()
+        
+    def setup_environment(self):
+        """Setup test environment"""
+        logger.info(f"Setting up environment for bug {{self.bug_id}}")
+        logger.info(f"Title: {{self.title}}")
+        logger.info(f"Platform: {{self.platform}}, Category: {{self.category}}")
+        
+        # Steps to reproduce from bug description:
+        reproduction_steps = """{steps}"""
+        logger.info(f"Reproduction steps:\\n{{reproduction_steps}}")
+        
+        return True
+        
+    def execute_reproduction_steps(self):
+        """Execute the specific reproduction steps for this bug"""
+        logger.info("Executing bug-specific reproduction steps...")
+        
+        # TODO: Implement specific reproduction logic based on:
+        # Steps: {steps}
+        # Expected: {expected_result}  
+        # Actual: {actual_result}
+        
+        # Placeholder implementation
+        logger.info("Manual implementation required for specific reproduction steps")
+        return True
+        
+    def run_test(self):
+        """Main test execution method"""
+        logger.info(f"Starting bug reproduction test for {{self.bug_id}}")
+        
+        try:
+            if not self.setup_environment():
+                return False
+                
+            result = self.execute_reproduction_steps()
+            
+            if result:
+                logger.info("✅ Bug reproduction test completed")
+            else:
+                logger.warning("⚠️ Bug reproduction test failed")
+                
+            return result
+            
+        except Exception as e:
+            logger.error(f"Test execution error: {{e}}")
+            return False
+
+if __name__ == "__main__":
+    test = BugReproductionTest()
+    success = test.run_test()
+    sys.exit(0 if success else 1)
+'''
+        
+        return jsonify({
+            'script': script,
+            'filename': f'bug_{bug_id}_reproduction_script.py',
+            'bug_info': {
+                'id': bug_id,
+                'title': title,
+                'category': category,
+                'platform': platform,
+                'priority': priority
+            }
+        })
+        
+    except requests.exceptions.ConnectionError:
+        return jsonify({'error': 'Cannot connect to BTS backend. Make sure it is running on port 3001.'}), 503
+    except Exception as e:
+        return jsonify({'error': f'Script generation failed: {str(e)}'}), 500
+
 if __name__ == '__main__':
     print("Initializing Phi-3 Web Chatbot with Log Analysis...")
     print("="*50)

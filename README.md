@@ -9,6 +9,7 @@ An intelligent AI-powered debugging assistant that helps developers analyze bugs
 - 📁 **Multi-Format Log Analysis**: Support for .log, .txt, .err, .out, .crash, .trace, .dmp files
 - 🐛 **Integrated Bug Tracking System**: Full-featured BTS with search and management
 - 🔄 **Interactive Reproduction Simulation**: Advanced modal-based simulation for bug reproduction scenarios
+- 📝 **AI-Powered Script Generation**: Generate Python automation scripts from bug descriptions using Phi-3 AI
 - 🎯 **Real-Time Progress Tracking**: Visual feedback during analysis with progress indicators
 - 🌐 **Modern Web Interface**: Responsive chat-based UI with drag-and-drop file upload
 - 💾 **Offline Operation**: Complete functionality without internet after initial setup
@@ -50,6 +51,8 @@ python -m venv phi3_env
 
 # Install Python dependencies
 pip install --upgrade pip
+# For GPU support (CUDA 12.1)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 pip install -r requirements.txt
 ```
 
@@ -97,7 +100,8 @@ We provide comprehensive documentation to help you get started and contribute ef
 3. **Chat with AI** about your bugs and issues
 4. **Search bugs** using IDs (e.g., `BUG-DEMO-1748084066155-0`)
 5. **Use reproduction simulation** for bug scenario testing
-6. **Get insights** through AI-powered analysis
+6. **Generate Python automation scripts** using AI from bug descriptions
+7. **Get insights** through AI-powered analysis
 
 ### 🔄 Reproduction Simulation (New in v4.0.0)
 The integrated reproduction simulation feature provides an interactive, visual workflow for testing bug scenarios:
@@ -120,6 +124,32 @@ The integrated reproduction simulation feature provides an interactive, visual w
 4. Click **"Start Simulation"** to begin the reproduction process
 5. Watch the real-time progress through all 9 stages
 6. Review the completion report and captured data
+
+### 📝 AI-Powered Script Generation (New in v5.0.0)
+Transform bug descriptions into executable Python automation scripts using advanced AI:
+
+#### **Key Features:**
+- 🤖 **Phi-3 AI Integration**: Uses Microsoft's Phi-3-mini-4k-instruct model for intelligent script generation
+- 🔍 **Smart Parsing**: Automatically extracts reproduction steps, expected vs actual results from bug descriptions
+- 🎯 **Category-Aware**: Generates specialized scripts for multimedia, driver, kernel, performance, and security issues
+- 🖥️ **Platform-Specific**: Creates Linux/Windows-specific implementations
+- 📊 **Comprehensive Testing**: Includes logging, error handling, and detailed reporting
+- 💾 **Export Options**: Copy to clipboard or download as `.py` files
+
+#### **How to Use:**
+1. Look up a bug using the Bug Lookup feature
+2. Click **"Repro Scenario"** to open the reproduction modal
+3. Click **"📝 Generate Script"** next to "Start Simulation"
+4. Watch the loading animation as AI analyzes the bug
+5. View the generated script in the popup modal with syntax highlighting
+6. Copy to clipboard or download the Python automation script
+7. Execute the script in your test environment
+
+#### **Generated Script Features:**
+- **Intelligent Analysis**: AI understands bug context and creates relevant test automation
+- **Production-Ready**: Complete scripts with imports, error handling, and logging
+- **Customizable**: Well-structured code that can be easily modified for specific environments
+- **Detailed Reporting**: Automatic test result tracking and report generation
 
 ### Supported File Types
 - **Log files**: `.log`, `.txt`
